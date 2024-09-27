@@ -1,4 +1,4 @@
- import { Sequelize } from 'sequelize';
+const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize('KillerBee', 'NEXTGEN\/2113136', '', {
     host: 'localhost',
