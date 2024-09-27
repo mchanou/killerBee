@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { Button } from '@mui/material';
+import KbPanel from './KbPanel';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import AddIcon from '@mui/icons-material/Add';
+
 
 export default function Tabs() {
   const [value, setValue] = React.useState('1');
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -25,10 +26,14 @@ export default function Tabs() {
           </TabList>
         </Box>
         <TabPanel value="1">
-            <Button variant='contained'><AddIcon/>Add</Button>
+            <KbPanel title="Add a freezbe model" isFreezbe={true}/>
         </TabPanel>
-        <TabPanel value="2">Item Two</TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
+        <TabPanel value="2">
+          <KbPanel title="Add an ingredient"/>
+        </TabPanel>
+        <TabPanel value="3">
+          <KbPanel title="Add a procedure"/>
+        </TabPanel>
       </TabContext>
     </Box>
   );
