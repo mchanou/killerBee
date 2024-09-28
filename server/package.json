@@ -2,9 +2,12 @@
     "name": "killerBee-server",
     "version": "1.0.0",
     "main": "index.js",
+    "type": "module",
     "scripts": {
-      "start": "node index.js"
+        "start": "node index.js"
     },
-    "dependencies": {}
-  }
-  
+    "dependencies": {
+        "sequelize": "^6.37.3",
+        "tedious": "^18.6.1"
+    }
+}

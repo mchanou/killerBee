@@ -1,4 +1,4 @@
-const sequelize = require('./database');
+import sequelize from './database.js';
 
 sequelize.authenticate()
   .then(() => {

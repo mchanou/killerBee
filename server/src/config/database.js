@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize('KillerBee', 'NEXTGEN\/2113136', '', {
     host: 'localhost',
@@ -11,4 +11,4 @@ const sequelize = new Sequelize('KillerBee', 'NEXTGEN\/2113136', '', {
     },
 });
 
-module.exports = sequelize;
+export default sequelize;
