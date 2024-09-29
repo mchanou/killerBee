@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import KbDialog from './KbDialog'
 import { Button } from '@mui/material';
 
-export default function KbPanel({title, isFreezbe}){
+export default function KbPanel({title, isFreezbe, isProc}){
 
     const [open, setOpen] = React.useState(false)
 
@@ -16,7 +16,7 @@ export default function KbPanel({title, isFreezbe}){
     return(
         <>
         <Button variant='contained' onClick={handleOpen}><AddIcon/>Add</Button>
-        <KbDialog title={title} opening = {open} handleClose={handleClose} isFreezbe={isFreezbe}></KbDialog>
+        <KbDialog title={title} opening = {open} handleClose={handleClose} isFreezbe={isFreezbe} isProc={isProc} ></KbDialog>
         </>
     )
 }

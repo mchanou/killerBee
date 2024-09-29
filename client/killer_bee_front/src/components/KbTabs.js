@@ -32,7 +32,7 @@ export default function Tabs() {
           <KbPanel title="Add an ingredient"/>
         </TabPanel>
         <TabPanel value="3">
-          <KbPanel title="Add a procedure"/>
+          <KbPanel title="Add a procedure" isProc={true}/>
         </TabPanel>
       </TabContext>
     </Box>
