@@ -1,12 +1,12 @@
 import { List, ListItem, TextField, Button, FormControl, MenuItem, Box, Alert, Snackbar} from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { useState } from "react";
-import { enqueueSnackbar, useSnackbar } from "notistack";
+import {useSnackbar } from "notistack";
 
 
 
 export default function Form({isFreezbe, isProc}){
-    const [enqueueSnackbar, closeSnackbar] = useSnackbar()
+    const {enqueueSnackbar} = useSnackbar();
     const [ingList, setIngList] = useState([])
     const [ing, setIng] = useState({
         "id": 0,
@@ -36,10 +36,8 @@ export default function Form({isFreezbe, isProc}){
     {
         if (ing.grammage === 0 || ingList.includes(ing.id)){
           enqueueSnackbar("Incorrect Inputs", {variant: "warning"})
-          console.log('bop')
         }
         else{
-            console.log('pob')
             setIngList([...ingList, ing])
         }   
     }    
