@@ -1,5 +1,6 @@
 import './App.css';
 
+
 import * as React from 'react';
 import Tabs from './components/KbTabs.js'
 
@@ -45,7 +46,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-          <Tabs></Tabs>
+        <Tabs></Tabs>
       </header>
     </div>
   );
