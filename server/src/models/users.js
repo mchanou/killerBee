@@ -1,18 +1,13 @@
-import DataTypes from 'sequelize'
+const connection = require('../config/database');
 
-const sequelize = require('../config/database');
+const sql = require('msnodesqlv8');
 
-const User = sequelize.define('Utilisateur', {
-    name: {
-        type: DataTypes.STRING, 
-        allowNull: false, 
-    },
+const query = "SELECT * FROM Utilisateur";
 
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
+sql.query(connection, query, (err, rows) => {
+    if (err) {
+        console.error("Erreur lors de l'exécution de la requête : ", err);
+        return;
+    }
+    console.log(rows);
 });
-
-module.exports = User;
