@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material"
+import { Button, Dialog, DialogActions, DialogTitle, Divider } from "@mui/material"
 import Form from "./Form"
 
 export default function KbDialog({title, opening, handleClose, isFreezbe, isProc}){
@@ -8,13 +8,15 @@ export default function KbDialog({title, opening, handleClose, isFreezbe, isProc
         <>
         <Dialog
         open = {opening}
-        onClose = {handleClose}
+        fullWidth
+        maxWidth="md"
         >
             <DialogTitle>{title}</DialogTitle>
+            <Divider/>
             <Form isFreezbe={isFreezbe} isProc={isProc}/>
             <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button type="submit">Submit</Button>
+                <Button variant="contained" onClick={handleClose}>Cancel</Button>
+                <Button variant="contained" type="submit">Submit</Button>
             </DialogActions>
         </Dialog>
         </>
