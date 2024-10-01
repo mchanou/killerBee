@@ -17,11 +17,21 @@ const users =  sql.query(connection, query, (err, rows) => {
         //  console.log(rows);
 
         if (Array.isArray(rows)) {
-            const fullNames = rows.map(user => `${user.PrenomUser} ${user.NomUser} ${user.EmailUser} ${user.LastConnexion} ${user.DateCreation}`);
-            console.log(fullNames);
+            const usersList = rows.map(user => {
+                return {
+                    prenom: user.PrenomUser,
+                    nom: user.NomUser,
+                    email: user.EmailUser,
+                    derniereConnexion: user.LastConnexion,
+                    dateCreation: user.DateCreation
+                };
+            });
+            
+            console.log(usersList);
+            
             // Route pour obtenir tous les utilisateurs
             router.get('/', (req, res) => {
-                res.json(fullNames);
+                res.json(usersList);
             });
         } else {
             console.log('users n\'est pas un tableau');
