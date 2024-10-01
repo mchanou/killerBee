@@ -1,17 +1,17 @@
-import { List, ListItem, TextField, Button, FormControl, MenuItem, Box, Alert, Snackbar} from "@mui/material";
+import { TextField, Button, FormControl, MenuItem, Box, Chip, Stack} from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { useState } from "react";
 import {useSnackbar } from "notistack";
 
 
-
 export default function Form({isFreezbe, isProc}){
     const {enqueueSnackbar} = useSnackbar();
+    const [grammage, setGrammage] = useState('')
+    const [selectedId, setSelectedId] = useState('')
     const [ingList, setIngList] = useState([])
-    const [ing, setIng] = useState({
-        "id": 0,
-        "grammage": 0
-    })
+    const [values, setValues] = useState([
+        
+    ])
     const [sampleIngList, setSampleIngList] = useState([
         {
             "id" : 1,
@@ -26,20 +26,28 @@ export default function Form({isFreezbe, isProc}){
     ])
 
     function handleChange(e){
-       setIng({...ing, 
-        [e.target.name] : e.target.value}
-       )
-    
+       setSelectedId(e.target.value)
     }
+    function handleGrammage(e){
+        setGrammage(e.target.value)
+    }
+
     
-    function addIng()
-    {
-        if (ing.grammage === 0 || ingList.includes(ing.id)){
-          enqueueSnackbar("Incorrect Inputs", {variant: "warning"})
+    function addIng(){
+        if (grammage === 0 || !grammage){
+            enqueueSnackbar("The grammage can't be zero", {variant: "warning"})
         }
-        else{
+        else if(grammage && selectedId){
+            const selectedItem = sampleIngList.find(item => item.id === selectedId)
+            const ing = {
+                ...selectedItem,
+                grammage: grammage
+            }
             setIngList([...ingList, ing])
-        }   
+            setGrammage('')
+            setSelectedId('')
+            
+        }
     }    
 
     return (
@@ -52,30 +60,32 @@ export default function Form({isFreezbe, isProc}){
                 <><Grid size={4}><TextField required label="Price" variant="outlined" placeholder="Enter the price" fullWidth></TextField></Grid>
                 <Grid size={8}><TextField required label = "Product Line" variant="outlined" placeholder="Enter the product line" fullWidth></TextField></Grid>
                 <Grid size={8}>
-                    <TextField select label="Ingredient" variant="outlined" fullWidth name="id" value={ing.id} onChange={handleChange}>
+                    <TextField select label="Ingredient" variant="outlined" fullWidth id="ingSelect" value={selectedId} onChange={handleChange}>
+                        <MenuItem value="" disabled>Select an ingredient</MenuItem>
                         {sampleIngList.map((sampleIng)=>{
                             return(
-                                <MenuItem value ={sampleIng.id} key={sampleIng.id}>{sampleIng.name}</MenuItem>
+                                <MenuItem value ={sampleIng.id} key={sampleIng.id} disabled={ingList.some(selected => selected.id === sampleIng.id)}>{sampleIng.name}</MenuItem>
                             )
                         })}
                     </TextField>
                         </Grid>
-                <Grid size={4}><TextField label = "Grammage" variant="outlined" placeholder="Enter the grammage" name="grammage" value={ing.grammage} fullWidth onChange={handleChange}></TextField></Grid>
+                <Grid size={4}><TextField label = "Grammage" variant="outlined" placeholder="Enter the grammage" name="grammage" value={grammage} onChange={handleGrammage} fullWidth></TextField></Grid>
                 <Grid size={12}><Button variant="contained" onClick={addIng}>Add ingredient to the list</Button></Grid>
             <Box sx={{borderRadius:1, bgcolor:"#eeeeee", width: 1000, height:200}}>
-            <List>
-                {ingList.map((ing)=>{
+            {/* <Typography variant="h5" marginLeft={2}>Ingredient List</Typography> */}
+            <Stack direction="row" spacing={1} margin={1}>
+            {ingList.map((ing)=>{
                        return(
-                        <ListItem key={ing.id}>{ing.grammage}</ListItem>
+                        <Chip label={ing.name + " : "+ ing.grammage+"cg"} onDelete={()=>{setIngList(ingList.filter(a => a.id !== ing.id))}}></Chip>
                        )
                 })}
-            </List>
+            </Stack>
             </Box>
             </>)}
                 {isProc && (
                 <>
                 <Grid size={8}>
-                    <TextField required label="Step's Name" variant="outlined" fullWidth></TextField>
+                    <TextField select required label = "Freezbe's model" variant="outlined" fullWidth></TextField>
                 </Grid>
                 <Grid size={4}>
                 <TextField select required label="Is Validated" variant="outlined" fullWidth>
@@ -84,9 +94,15 @@ export default function Form({isFreezbe, isProc}){
                 </TextField>
                 </Grid>
                 <Grid size={12}>
+                    <TextField required label="Step's Name" variant="outlined" fullWidth></TextField>
+                </Grid>
+               <Grid size={12}>
                     <TextField required multiline label = "Step's Description" variant="outlined" rows={2} fullWidth></TextField>
                 </Grid>
+                <Grid size={12}><Button variant="contained">Add step to the list</Button></Grid>
+                <Box sx={{borderRadius:1, bgcolor:"#eeeeee", width: 1000, height:200}}>
                 
+                </Box>
                 </>)}
             </Grid>
         </FormControl>
