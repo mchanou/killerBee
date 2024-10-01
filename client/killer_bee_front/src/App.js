@@ -43,7 +43,7 @@ function App() {
           <h1>Liste des utilisateurs</h1>
           <ul>
               {users.map((user, index) => (
-                  <li key={index}>{user.PrenomUser}</li>
+                  <li key={index}> {user.NomUser} {user.PrenomUser}</li>
               ))}
           </ul>
       </div>
