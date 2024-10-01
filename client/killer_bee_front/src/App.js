@@ -36,14 +36,14 @@ function App() {
           .catch(error => {
               console.error('Erreur lors de la récupération des utilisateurs:', error);
           });
-  }, []);
+  }, []);  
 
   return (
       <div>
           <h1>Liste des utilisateurs</h1>
           <ul>
               {users.map((user, index) => (
-                  <li key={index}>{user.prenom}</li>
+                  <li key={index}>{user.PrenomUser}</li>
               ))}
           </ul>
       </div>
