@@ -1,17 +1,25 @@
 import { TextField, Button, FormControl, MenuItem, Box, Chip, Stack} from "@mui/material";
 import Grid from '@mui/material/Grid2';
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import {useSnackbar } from "notistack";
+import KbDialog from './KbDialog'
 
 
-export default function Form({isFreezbe, isProc}){
+const ProcedureForm=forwardRef((props, ref) =>{
+
     const {enqueueSnackbar} = useSnackbar();
     const [grammage, setGrammage] = useState('')
     const [selectedId, setSelectedId] = useState('')
     const [ingList, setIngList] = useState([])
-    const [values, setValues] = useState([
-        
-    ])
+    const [freezbe, setFreezbe] = useState(
+        {
+            "name": "",
+            "description": "",
+            "freezbePrice": "",
+            "productLine": "",
+            "ingredients": []
+        }
+    )
     const [sampleIngList, setSampleIngList] = useState([
         {
             "id" : 1,
@@ -32,6 +40,12 @@ export default function Form({isFreezbe, isProc}){
         setGrammage(e.target.value)
     }
 
+    function handleFreezbe(id, value){
+        let values = freezbe;
+        values = { ...values, [id]: value };
+        setFreezbe(values);
+    }
+
     
     function addIng(){
         if (grammage === 0 || !grammage){
@@ -48,42 +62,48 @@ export default function Form({isFreezbe, isProc}){
             setSelectedId('')
             
         }
-    }    
+    }
+    function submit(){
+        if(ingList){
+            setFreezbe({...freezbe, ingredients: [...freezbe.ingredients, ingList]})
+            console.log(ingList)
+        }
+        else{
+            enqueueSnackbar("The ingredient list can't be empty", {variant: "warning"})
+        }
+        
+    }
+    
+    useImperativeHandle(ref, ()=>({
+        submitFreezbe: submit 
+    }))
 
     return (
         <>
-        <FormControl  sx={{margin: 2}}>
+        <KbDialog
+        title="Add a procedure" 
+        opening={props.open} 
+        handleClose={props.onClose} 
+        actions={[
+                        {
+                            label: "Cancel",
+                            default: true,
+                            onClick: props.onClose,
+                        },
+                        {
+                            label: "Submit",
+                            default: true,
+                            onClick: submit,
+                        },
+                    ]}>
+        <FormControl sx={{margin: 2}}>
             <Grid container spacing={2}>
-            <Grid size={12}><TextField required label= "Name" variant="outlined" placeholder="Enter a name" fullWidth></TextField></Grid>
-            <Grid size={12}><TextField required multiline label= "Description" variant="outlined" placeholder="Enter a description" rows={4} fullWidth></TextField></Grid>
-            {isFreezbe && (
-                <><Grid size={4}><TextField required label="Price" variant="outlined" placeholder="Enter the price" fullWidth></TextField></Grid>
-                <Grid size={8}><TextField required label = "Product Line" variant="outlined" placeholder="Enter the product line" fullWidth></TextField></Grid>
-                <Grid size={8}>
-                    <TextField select label="Ingredient" variant="outlined" fullWidth id="ingSelect" value={selectedId} onChange={handleChange}>
-                        <MenuItem value="" disabled>Select an ingredient</MenuItem>
-                        {sampleIngList.map((sampleIng)=>{
-                            return(
-                                <MenuItem value ={sampleIng.id} key={sampleIng.id} disabled={ingList.some(selected => selected.id === sampleIng.id)}>{sampleIng.name}</MenuItem>
-                            )
-                        })}
-                    </TextField>
-                        </Grid>
-                <Grid size={4}><TextField label = "Grammage" variant="outlined" placeholder="Enter the grammage" name="grammage" value={grammage} onChange={handleGrammage} fullWidth></TextField></Grid>
-                <Grid size={12}><Button variant="contained" onClick={addIng}>Add ingredient to the list</Button></Grid>
-            <Box sx={{borderRadius:1, bgcolor:"#eeeeee", width: 1000, height:200}}>
-            {/* <Typography variant="h5" marginLeft={2}>Ingredient List</Typography> */}
-            <Stack direction="row" spacing={1} margin={1}>
-            {ingList.map((ing)=>{
-                       return(
-                        <Chip label={ing.name + " : "+ ing.grammage+"cg"} onDelete={()=>{setIngList(ingList.filter(a => a.id !== ing.id))}}></Chip>
-                       )
-                })}
-            </Stack>
-            </Box>
-            </>)}
-                {isProc && (
-                <>
+            <Grid size={12}>
+                <TextField required label= "Name" variant="outlined" placeholder="Enter a name" fullWidth onChange={(e)=>handleFreezbe("name", e.target.value)}/>
+            </Grid>
+            <Grid size={12}>
+                <TextField required multiline label= "Description" variant="outlined" placeholder="Enter a description" rows={4} fullWidth onChange={(e)=>handleFreezbe("description", e.target.value)}/>
+            </Grid>
                 <Grid size={8}>
                     <TextField select required label = "Freezbe's model" variant="outlined" fullWidth></TextField>
                 </Grid>
@@ -103,9 +123,10 @@ export default function Form({isFreezbe, isProc}){
                 <Box sx={{borderRadius:1, bgcolor:"#eeeeee", width: 1000, height:200}}>
                 
                 </Box>
-                </>)}
             </Grid>
         </FormControl>
-        </>
+        </KbDialog>
+</>
     )
-}
+})
+export default ProcedureForm

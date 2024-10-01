@@ -26,13 +26,13 @@ export default function Tabs() {
           </TabList>
         </Box>
         <TabPanel value="1">
-            <KbPanel title="Add a freezbe model" isFreezbe={true}/>
+            <KbPanel type="freezbe"/>
         </TabPanel>
         <TabPanel value="2">
-          <KbPanel title="Add an ingredient"/>
+          <KbPanel type="ingredient"/>
         </TabPanel>
         <TabPanel value="3">
-          <KbPanel title="Add a procedure" isProc={true}/>
+          <KbPanel type="procedure"/>
         </TabPanel>
       </TabContext>
     </Box>
