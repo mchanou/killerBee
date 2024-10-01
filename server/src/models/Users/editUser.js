@@ -6,43 +6,73 @@ const sql = require('msnodesqlv8');
 // Route pour mettre à jour un utilisateur par ID
 router.put('/:id', (req, res) => {
     const userId = parseInt(req.params.id, 10);
+    const { PrenomUser, NomUser, EmailUser, LastConnexion, DateCreation } = req.body;
 
     // Vérification de la validité de l'ID
     if (isNaN(userId) || userId <= 0) {
         return res.status(400).json({ message: 'ID utilisateur invalide.' });
     }
 
-    const { prenom, nom, email, derniereConnexion, dateCreation } = req.body;
-
     // Validation des données
-    if (!prenom || !nom || !email) {
-        return res.status(400).json({ message: 'Les champs prenom, nom et email sont obligatoires.' });
+    if (!PrenomUser || !NomUser || !EmailUser) {
+        return res.status(400).json({ message: 'Les champs PrenomUser, NomUser et EmailUser sont obligatoires.' });
     }
 
-    // Vérification et conversion des dates si nécessaire
-    let lastConnexion, creationDate;
+    // Vérification et conversion des dates si elles sont fournies
+    let lastConnexion = null;
+    let creationDate = null;
     try {
-        lastConnexion = new Date(derniereConnexion).toISOString().split('T')[0];
-        creationDate = new Date(dateCreation).toISOString().split('T')[0];
+        if (LastConnexion) {
+            lastConnexion = new Date(LastConnexion);
+        }
+        if (DateCreation) {
+            creationDate = new Date(DateCreation);
+        }
     } catch (error) {
         return res.status(400).json({ message: 'Format de date invalide.' });
     }
 
-    const query = `UPDATE Utilisateur SET PrenomUser = ?, NomUser = ?, EmailUser = ?, LastConnexion = ?, DateCreation = ? WHERE Id = ?`;
-    const params = [prenom, nom, email, lastConnexion, creationDate, userId];
+    // Vérifier si l'utilisateur existe
+    const queryCheck = `SELECT * FROM Utilisateur WHERE IdUser = ?`;
 
-    sql.query(connectionString, query, params, (err, result) => {
+    sql.query(connectionString, queryCheck, [userId], (err, rows) => {
         if (err) {
-            console.error("Erreur lors de la mise à jour de l'utilisateur : ", err);
-            return res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'utilisateur.' });
+            console.error("Erreur lors de la vérification de l'utilisateur : ", err);
+            return res.status(500).json({ message: 'Erreur lors de la vérification de l\'utilisateur.' });
         }
 
-        // Vérification si l'utilisateur a été trouvé et mis à jour
-        if (result.rowsAffected[0] === 0) {
+        // Vérification si l'utilisateur n'existe pas
+        if (!rows || rows.length === 0) {
             return res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
 
+        // Si l'utilisateur existe, procéder à la mise à jour
+        const queryUpdate = `UPDATE Utilisateur SET PrenomUser = ?, NomUser = ?, EmailUser = ?, LastConnexion = ?, DateCreation = ? WHERE IdUser = ?`;
+        const params = [PrenomUser, NomUser, EmailUser, lastConnexion, creationDate, userId];
+
+
+        
+        TODO : "It's possible to update the informations but I need to fix the following error messages code";
+        sql.query(connectionString, queryUpdate, params, (err, result) => {
+            if (err) {
+                console.error("Erreur lors de la mise à jour de l'utilisateur : ", err);
+                return res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'utilisateur.' });
+            }
+        });
+
+        sql.query(connectionString, queryCheck, params, (err, result) => {
+             // Vérification si le résultat est valide
+         if (!result || result.length === 0) {
+            return res.status(500).json({ message: 'Aucune information sur l\'affectation des lignes n\'a été renvoyée.' });
+        }
+
+        // Vérification si l'utilisateur a été mis à jour
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'Échec de la mise à jour de l\'utilisateur.' });
+        }
+
         res.json({ message: 'Utilisateur mis à jour avec succès.' });
+        })
     });
 });
 
