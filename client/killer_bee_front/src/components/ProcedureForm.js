@@ -1,82 +1,86 @@
 import { TextField, Button, FormControl, MenuItem, Box, Chip, Stack} from "@mui/material";
 import Grid from '@mui/material/Grid2';
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import {useSnackbar } from "notistack";
 import KbDialog from './KbDialog'
 
 
+
 const ProcedureForm=forwardRef((props, ref) =>{
 
+    function StepItem({index, step, onDelete}){
+        return(
+            <Chip color="primary" label={step.stepNumber + "." + step.stepName} onDelete={onDelete}></Chip>
+        )
+    }
+
     const {enqueueSnackbar} = useSnackbar();
-    const [grammage, setGrammage] = useState('')
-    const [selectedId, setSelectedId] = useState('')
-    const [ingList, setIngList] = useState([])
-    const [freezbe, setFreezbe] = useState(
-        {
-            "name": "",
-            "description": "",
-            "freezbePrice": "",
-            "productLine": "",
-            "ingredients": []
-        }
-    )
-    const [sampleIngList, setSampleIngList] = useState([
+    const initialValues = {
+        "name": "",
+        "description": "",
+        "freezbeModel": "",
+        "validation": ""
+    }
+    const initialStep = {
+        "stepName": null,
+        "stepDesc": null,
+        "stepNumber": 0
+    }
+    const [procedure, setProcedure] = useState(initialValues)
+    const [step, setStep] = useState(initialStep)
+    const [lastIndex, setLastIndex] = useState(null);
+    const [stepsList, setStepsList] = useState([])
+    const [sampleModelList, setSampleModelList] = useState([
         {
             "id" : 1,
-            "name": "Plastic",
+            "name": "Sharingan",
             "description": "description"
         },
         {
             "id": 2,
-            "name": "Rubber",
+            "name": "Rinnegan",
             "description": "this is a description"
         }
     ])
 
-    function handleChange(e){
-       setSelectedId(e.target.value)
-    }
-    function handleGrammage(e){
-        setGrammage(e.target.value)
-    }
 
-    function handleFreezbe(id, value){
-        let values = freezbe;
+    function handleChange(id, value){
+        let values = procedure;
         values = { ...values, [id]: value };
-        setFreezbe(values);
+        setProcedure(values);
     }
 
-    
-    function addIng(){
-        if (grammage === 0 || !grammage){
-            enqueueSnackbar("The grammage can't be zero", {variant: "warning"})
-        }
-        else if(grammage && selectedId){
-            const selectedItem = sampleIngList.find(item => item.id === selectedId)
-            const ing = {
-                ...selectedItem,
-                grammage: grammage
-            }
-            setIngList([...ingList, ing])
-            setGrammage('')
-            setSelectedId('')
-            
-        }
+    function handleStep(id, value){
+        let values = step;
+        values = { ...values, [id]: value };
+        setStep(values);
     }
+
+    function addStep(){
+        if(!step){
+            return;
+        }
+        const newStep = {
+            ...step,
+            stepNumber: stepsList.length + 1
+        }
+        setStepsList([...stepsList, newStep])
+        setStep(initialStep)
+    }
+
     function submit(){
-        if(ingList){
-            setFreezbe({...freezbe, ingredients: [...freezbe.ingredients, ingList]})
-            console.log(ingList)
-        }
-        else{
-            enqueueSnackbar("The ingredient list can't be empty", {variant: "warning"})
-        }
-        
+        console.log(procedure)
+        console.log(stepsList)
+        setProcedure(initialValues)
     }
-    
-    useImperativeHandle(ref, ()=>({
-        submitFreezbe: submit 
-    }))
+
+    useEffect(()=>{
+        if(props.open === false){
+            setProcedure(initialValues)
+            setStep(initialStep)
+            setStepsList([])
+        }
+    }, [props.open])
 
     return (
         <>
@@ -99,30 +103,54 @@ const ProcedureForm=forwardRef((props, ref) =>{
         <FormControl sx={{margin: 2}}>
             <Grid container spacing={2}>
             <Grid size={12}>
-                <TextField required label= "Name" variant="outlined" placeholder="Enter a name" fullWidth onChange={(e)=>handleFreezbe("name", e.target.value)}/>
+                <TextField required label= "Name" variant="outlined" placeholder="Enter a name" fullWidth onChange={(e)=>handleChange("name", e.target.value)}/>
             </Grid>
             <Grid size={12}>
-                <TextField required multiline label= "Description" variant="outlined" placeholder="Enter a description" rows={4} fullWidth onChange={(e)=>handleFreezbe("description", e.target.value)}/>
+                <TextField required multiline label= "Description" variant="outlined" placeholder="Enter a description" rows={4} fullWidth onChange={(e)=>handleChange("description", e.target.value)}/>
             </Grid>
-                <Grid size={8}>
-                    <TextField select required label = "Freezbe's model" variant="outlined" fullWidth></TextField>
+            <Grid size={8}>
+                    <TextField select required label = "Freezbe's model" variant="outlined" fullWidth onChange={(e)=>handleChange("freezbeModel", e.target.value)}>
+                    <MenuItem value="" disabled>Select an ingredient</MenuItem>
+                        {sampleModelList.map((sampleModel)=>{
+                            return(
+                                <MenuItem value ={sampleModel.id} key={sampleModel.id} disabled={stepsList.some(selected => selected.id === sampleModel.id)}>{sampleModel.name}</MenuItem>
+                            )
+                        })}
+                    </TextField>
                 </Grid>
                 <Grid size={4}>
-                <TextField select required label="Is Validated" variant="outlined" fullWidth>
+                <TextField select required label="Is Validated" variant="outlined" fullWidth onChange={(e)=>handleChange("validation", e.target.value)}>
                     <MenuItem value={1}>Yes</MenuItem>
                     <MenuItem value={0}>No</MenuItem>
                 </TextField>
                 </Grid>
                 <Grid size={12}>
-                    <TextField required label="Step's Name" variant="outlined" fullWidth></TextField>
+                    <TextField required label="Step's Name" variant="outlined" fullWidth value={step.stepName} onChange={(e)=>handleStep("stepName", e.target.value)}></TextField>
                 </Grid>
                <Grid size={12}>
-                    <TextField required multiline label = "Step's Description" variant="outlined" rows={2} fullWidth></TextField>
+                    <TextField required multiline label = "Step's Description" variant="outlined" rows={2} fullWidth value={step.stepDesc} onChange={(e)=>handleStep("stepDesc", e.target.value)}></TextField>
                 </Grid>
-                <Grid size={12}><Button variant="contained">Add step to the list</Button></Grid>
-                <Box sx={{borderRadius:1, bgcolor:"#eeeeee", width: 1000, height:200}}>
-                
+                <Grid size={12}><Button variant="contained" onClick={addStep}>Add step to the list</Button></Grid>
+                <Grid size={12}>
+                <Box sx={{borderRadius:1, bgcolor:"#eeeeee", height:200}}>
+                <Stack direction="row" spacing={1} padding={1}>
+                    {stepsList.map((step, index)=>{
+                            return(
+                            <StepItem step={step} onDelete={()=>{
+                                const newSteps = stepsList.filter(a => a.stepName !== step.stepName)
+                                const updatedSteps = newSteps.map((step, index)=>({
+                                    ...step,
+                                    stepNumber: index + 1
+                                }))
+                                setStepsList(updatedSteps)
+                            }}>
+                            </StepItem>
+                        )
+                    })}
+                </Stack>
                 </Box>
+                </Grid>
+                
             </Grid>
         </FormControl>
         </KbDialog>

@@ -16,11 +16,13 @@ const IngredientForm = forwardRef((props, ref) =>{
     )
 
     function submit(){
-        
+        console.log(ingredient)
     }
     
-   function handleChange(){
-
+   function handleChange(id, value){
+    let values = ingredient;
+        values = { ...values, [id]: value };
+        setIngredient(values);
    }
 
     return (
@@ -41,13 +43,13 @@ const IngredientForm = forwardRef((props, ref) =>{
                             onClick: submit,
                         },
                     ]}>
-        <FormControl sx={{margin: 2}}>
+        <FormControl fullWidth>
             <Grid container spacing={2}>
             <Grid size={12}>
-                <TextField required label= "Name" variant="outlined" placeholder="Enter a name" fullWidth onChange={(e)=>handleChange("name", e.target.value)}/>
+            <TextField required label= "Name" variant="outlined" placeholder="Enter a name" onChange={(e)=>handleChange("name", e.target.value)} fullWidth/>
             </Grid>
             <Grid size={12}>
-                <TextField required multiline label= "Description" variant="outlined" placeholder="Enter a description" rows={4} fullWidth onChange={(e)=>handleChange("description", e.target.value)}/>
+            <TextField required multiline label= "Description" variant="outlined" placeholder="Enter a description" rows={4} onChange={(e)=>handleChange("description", e.target.value)} fullWidth/>
             </Grid>
             </Grid>
         </FormControl>

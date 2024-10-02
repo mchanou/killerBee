@@ -32,7 +32,6 @@ export default function KbDialog({title, opening, handleClose, children, actions
             ) : null}</DialogTitle>
             <Divider/>
             <DialogContent>{children}</DialogContent>
-            
             <DialogActions>
             {actions.map((action) => (
                                 <Button
