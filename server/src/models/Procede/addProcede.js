@@ -5,15 +5,15 @@ const sql = require('msnodesqlv8');
 
 // Route pour ajouter un procédé
 router.post('/', (req, res) => {
-    let { NomProcede, DescriptionProcede, ValidationTest } = req.body;
+    let { NomProcede, DescriptionProcede, ValidationTest, IdFreezbe } = req.body;
 
     // Validation des données
     if (!NomProcede || !DescriptionProcede || ValidationTest === undefined) {
         return res.status(400).json({ message: 'Les champs NomProcede, DescriptionProcede et ValidationTest sont obligatoires.' });
     }
     
-    const query = `INSERT INTO dbo.Procede (NomProcede, DescriptionProcede, ValidationTest) VALUES (?, ?, ?)`;
-    const params = [NomProcede, DescriptionProcede, ValidationTest];
+    const query = `INSERT INTO dbo.Procede (NomProcede, DescriptionProcede, ValidationTest, IdFreezbe) VALUES (?, ?, ?, ?)`;
+    const params = [NomProcede, DescriptionProcede, ValidationTest, IdFreezbe];
 
     sql.query(connectionString, query, params, (err, result) => {
         if (err) {

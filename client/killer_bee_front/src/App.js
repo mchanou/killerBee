@@ -29,6 +29,7 @@ function App() {
   const [procedes, setProcedes] = useState([]);
   const [ingredients, setIngredient] = useState([]);
   const [freezbes, setFreezbe] = useState([]);
+  const [etapes, setEtape] = useState([]);
 
 
   useEffect(() => {
@@ -74,7 +75,18 @@ useEffect(() => {
         .catch(error => {
             console.error('Erreur lors de la récupération des utilisateurs:', error);
         });
-}, []);  
+}, []); 
+
+useEffect(() => {
+    // Utiliser la route '/users' pour récupérer les utilisateurs
+    axios.get('http://localhost:5000/api/etape')
+        .then(response => {
+            setEtape(response.data);
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des utilisateurs:', error);
+        });
+}, []); 
 
   return (
       <div>
@@ -103,6 +115,13 @@ useEffect(() => {
           <ul>
               {freezbes.map((freezbe, index) => (
                   <li key={index}> {freezbe.NomFreezbe} | {freezbe.DescriptionFreezbe} | {freezbe.PrixUHTFreezbe}</li>
+              ))}
+          </ul>
+
+          <h1>Liste des Etapes</h1>
+          <ul>
+              {etapes.map((etape, index) => (
+                  <li key={index}> {etape.DescriptionEtape}</li>
               ))}
           </ul>
 

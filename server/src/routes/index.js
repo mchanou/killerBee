@@ -30,6 +30,20 @@ const editFreezbe = require('../models/Freezbe/editFreezbe');
 const removeFreezbe = require('../models/Freezbe/removeFreezbe');
 const findFreezbe = require('../models/Freezbe/findFreezbe');
 
+//Etape
+const etapeRoutes = require('../models/etape/etape');
+const addEtape = require('../models/etape/addEtape');
+const editEtape = require('../models/etape/editEtape');
+const removeEtape = require('../models/etape/removeEtape');
+const findEtape = require('../models/etape/findEtape');
+
+//ProcedeEtape
+const procedeEtapeRoutes = require('../models/Procede_etape/procede_etape');
+const addProcedeEtape = require('../models/Procede_etape/add_procede_etape');
+const editProcedeEtape = require('../models/Procede_etape/edit_procede_etape');
+const removeProcedeEtape = require('../models/Procede_etape/remove_procede_etape');
+const findProcedeEtape = require('../models/Procede_etape/find_procede_etape');
+
 // const authRoutes = require('./authRoutes');
 
 router.use('/users', userRoutes);
@@ -55,6 +69,18 @@ router.use('/addFreezbe', addFreezbe);
 router.use('/editFreezbe', editFreezbe);
 router.use('/removeFreezbe', removeFreezbe);
 router.use('/findFreezbe', findFreezbe);
+
+router.use('/etape', etapeRoutes);
+router.use('/addEtape', addEtape);
+router.use('/editEtape', editEtape);
+router.use('/removeEtape', removeEtape);
+router.use('/findEtape', findEtape);
+
+// router.use('/procede_etape', procedeEtapeRoutes);
+router.use('/add_procede_etape', addProcedeEtape);
+router.use('/edit_procede_etape', editProcedeEtape);
+router.use('/remove_procede_etape', removeProcedeEtape);
+router.use('/find_procede_etape', findProcedeEtape);
 
 // router.use('/auth', authRoutes);
 
