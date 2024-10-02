@@ -3,16 +3,28 @@ const express = require('express');
 const router = express.Router();
 const sql = require('msnodesqlv8');
 
-// Route pour rechercher un Freezbe par nom
-router.get('/:nom', (req, res) => {
-    const nomFreezbe = req.params.nom;
+// Route pour obtenir un Freezbe par nom avec ses ingrédients et grammage
+router.get('/:name', (req, res) => {
+    const freezbeName = req.params.name;
 
-    const query = `SELECT * FROM dbo.Freezbe WHERE NomFreezbe = ?`;
+    // Validation du nom du Freezbe
+    if (!freezbeName) {
+        return res.status(400).json({ message: 'Le nom du Freezbe est obligatoire.' });
+    }
 
-    sql.query(connectionString, query, [nomFreezbe], (err, rows) => {
+    const query = `
+        SELECT f.IdFreezbe, f.NomFreezbe, f.DescriptionFreezbe, f.PrixUHTFreezbe, f.GammeFreezbe,
+               i.IdIngredient, i.NomIngredient, i.DescriptionIngredient, fi.Grammage
+        FROM dbo.Freezbe f
+        LEFT JOIN dbo.Freezbe_ingredient fi ON f.IdFreezbe = fi.IdFreezbe
+        LEFT JOIN dbo.Ingredient i ON fi.IdIngredient = i.IdIngredient
+        WHERE f.NomFreezbe = ?
+    `;
+
+    sql.query(connectionString, query, [freezbeName], (err, rows) => {
         if (err) {
-            console.error("Erreur lors de la récupération du Freezbe : ", err);
-            return res.status(500).json({ message: 'Erreur lors de la récupération du Freezbe.' });
+            console.error("Erreur lors de la récupération du Freezbe et de ses ingrédients : ", err);
+            return res.status(500).json({ message: 'Erreur lors de la récupération du Freezbe et de ses ingrédients.' });
         }
 
         // Vérifier si aucun Freezbe n'a été trouvé
@@ -20,10 +32,23 @@ router.get('/:nom', (req, res) => {
             return res.status(404).json({ message: 'Freezbe non trouvé.' });
         }
 
-        // Retourner les détails du Freezbe trouvé
-        res.json(rows[0]);
+        // Construire l'objet Freezbe avec ses ingrédients
+        const freezbe = {
+            IdFreezbe: rows[0].IdFreezbe,
+            NomFreezbe: rows[0].NomFreezbe,
+            DescriptionFreezbe: rows[0].DescriptionFreezbe,
+            PrixUHTFreezbe: rows[0].PrixUHTFreezbe,
+            GammeFreezbe: rows[0].GammeFreezbe,
+            Ingredients: rows.map(row => ({
+                IdIngredient: row.IdIngredient,
+                NomIngredient: row.NomIngredient,
+                DescriptionIngredient: row.DescriptionIngredient,
+                Grammage: row.Grammage
+            })).filter(ingredient => ingredient.IdIngredient !== null) // Remove null ingredients (if any)
+        };
+
+        res.json(freezbe);
     });
 });
 
 module.exports = router;
-

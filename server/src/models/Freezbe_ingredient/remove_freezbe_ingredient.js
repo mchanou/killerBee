@@ -1,3 +1,8 @@
+const connectionString = require('../../config/database'); // Charger la chaîne de connexion
+const express = require('express');
+const router = express.Router();
+const sql = require('msnodesqlv8');
+
 // Route pour supprimer une relation Freezbe-Ingredient
 router.delete('/:idFreezbe/:idIngredient', (req, res) => {
     const IdFreezbe = parseInt(req.params.idFreezbe, 10);

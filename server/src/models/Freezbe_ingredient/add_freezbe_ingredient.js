@@ -12,7 +12,7 @@ router.post('/', (req, res) => {
         return res.status(400).json({ message: 'Les champs IdFreezbe, IdIngredient, et Grammage sont obligatoires.' });
     }
 
-    const query = `INSERT INTO dbo.Freezbe_ingredient (IdFreezbe, IdIngredient, Grammage) VALUES (?, ?, ?)`;
+    const query = `INSERT INTO Freezbe_ingredient (IdFreezbe, IdIngredient, Grammage) VALUES (?, ?, ?)`;
     const params = [IdFreezbe, IdIngredient, Grammage];
 
     sql.query(connectionString, query, params, (err, result) => {
