@@ -1,6 +1,6 @@
 import { TextField, Button, FormControl, MenuItem, Box, Chip, Stack} from "@mui/material";
 import Grid from '@mui/material/Grid2';
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 import {useSnackbar } from "notistack";
 import KbDialog from "./KbDialog";
 
@@ -8,12 +8,11 @@ import KbDialog from "./KbDialog";
 const IngredientForm = forwardRef((props, ref) =>{
 
     const {enqueueSnackbar} = useSnackbar();
-    const [ingredient, setIngredient] = useState(
-        {
-            "name": "",
-            "description": ""
-        }
-    )
+    const initialIngredient =  {
+        "name": "",
+        "description": ""
+    }
+    const [ingredient, setIngredient] = useState(initialIngredient)
 
     function submit(){
         console.log(ingredient)
@@ -24,6 +23,12 @@ const IngredientForm = forwardRef((props, ref) =>{
         values = { ...values, [id]: value };
         setIngredient(values);
    }
+
+   useEffect(()=>{
+    if(props.open === false){
+        setIngredient(initialIngredient)
+    }
+}, [props.open])
 
     return (
         <>

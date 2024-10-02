@@ -1,15 +1,7 @@
 import { useRef } from "react"
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from "@mui/material"
-import Form from "./FreezbeForm"
 import { Close } from '@mui/icons-material';
 export default function KbDialog({title, opening, handleClose, children, actions=[]}){
-    const formRef = useRef();
-
-    function submit(){
-        if(formRef.current){
-            formRef.current.submitFreezbe();
-        }
-    }
 
     return(
         <>

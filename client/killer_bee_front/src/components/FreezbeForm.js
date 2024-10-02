@@ -1,6 +1,6 @@
 import { TextField, Button, FormControl, MenuItem, Box, Chip, Stack} from "@mui/material";
 import Grid from '@mui/material/Grid2';
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 import {useSnackbar } from "notistack";
 import KbDialog from './KbDialog'
 
@@ -11,15 +11,14 @@ const FreezbeForm = forwardRef((props, ref) =>{
     const [grammage, setGrammage] = useState('')
     const [selectedId, setSelectedId] = useState('')
     const [ingList, setIngList] = useState([])
-    const [freezbe, setFreezbe] = useState(
-        {
-            "name": "",
-            "description": "",
-            "freezbePrice": "",
-            "productLine": "",
-            "ingredients": []
-        }
-    )
+    const initialFreezbe = {
+        "name": "",
+        "description": "",
+        "freezbePrice": "",
+        "productLine": "",
+        "ingredients": []
+    }
+    const [freezbe, setFreezbe] = useState(initialFreezbe)
     const [sampleIngList, setSampleIngList] = useState([
         {
             "id" : 1,
@@ -71,8 +70,15 @@ const FreezbeForm = forwardRef((props, ref) =>{
         else{
             enqueueSnackbar("The ingredient list can't be empty", {variant: "warning"})
         }
-        
     }
+
+    useEffect(()=>{
+        if(props.open === false){
+            setIngList([])
+            setFreezbe(initialFreezbe)
+
+        }
+    }, [props.open])
 
     return (
         <>

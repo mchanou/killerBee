@@ -28,7 +28,6 @@ const ProcedureForm=forwardRef((props, ref) =>{
     }
     const [procedure, setProcedure] = useState(initialValues)
     const [step, setStep] = useState(initialStep)
-    const [lastIndex, setLastIndex] = useState(null);
     const [stepsList, setStepsList] = useState([])
     const [sampleModelList, setSampleModelList] = useState([
         {

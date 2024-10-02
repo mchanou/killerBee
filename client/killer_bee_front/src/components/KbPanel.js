@@ -1,6 +1,5 @@
 import * as React from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import KbDialog from './KbDialog'
 import { Button } from '@mui/material';
 import FreezbeForm from './FreezbeForm';
 import ProcedureForm from './ProcedureForm';
