@@ -44,6 +44,13 @@ const editProcedeEtape = require('../models/Procede_etape/edit_procede_etape');
 const removeProcedeEtape = require('../models/Procede_etape/remove_procede_etape');
 const findProcedeEtape = require('../models/Procede_etape/find_procede_etape');
 
+//FreezbeIngredient
+// const freezbeIngredientRoutes = require('../models/Procede_etape/procede_etape');
+const addFreezbeIngredient = require('../models/Freezbe_ingredient/add_freezbe_ingredient');
+const editFreezbeIngredient = require('../models/Freezbe_ingredient/edit_freezbe_ingredient');
+const removeFreezbeIngredient = require('../models/Freezbe_ingredient/remove_freezbe_ingredient');
+// const findFreezbeIngredient = require('../models/Procede_etape/find_procede_etape');
+
 // const authRoutes = require('./authRoutes');
 
 router.use('/users', userRoutes);
@@ -81,6 +88,10 @@ router.use('/add_procede_etape', addProcedeEtape);
 router.use('/edit_procede_etape', editProcedeEtape);
 router.use('/remove_procede_etape', removeProcedeEtape);
 router.use('/find_procede_etape', findProcedeEtape);
+
+router.use('/add_freezbe_ingredient', addFreezbeIngredient);
+router.use('/edit_freezbe_ingredient', editFreezbeIngredient);
+router.use('/remove_freezbe_ingredient', removeFreezbeIngredient);
 
 // router.use('/auth', authRoutes);
 
