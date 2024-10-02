@@ -27,6 +27,8 @@ import './App.css';
 function App() {
   const [users, setUsers] = useState([]);
   const [procedes, setProcedes] = useState([]);
+  const [ingredients, setIngredient] = useState([]);
+
 
   useEffect(() => {
       // Utiliser la route '/users' pour récupérer les utilisateurs
@@ -50,6 +52,17 @@ function App() {
               console.error('Erreur lors de la récupération des utilisateurs:', error);
           });
   }, []);  
+  
+  useEffect(() => {
+    // Utiliser la route '/users' pour récupérer les utilisateurs
+    axios.get('http://localhost:5000/api/ingredient')
+        .then(response => {
+            setIngredient(response.data);
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des utilisateurs:', error);
+        });
+}, []);  
 
   return (
       <div>
@@ -59,12 +72,21 @@ function App() {
                   <li key={index}> {user.PrenomUser} {user.NomUser} {user.EmailUser}</li>
               ))}
           </ul>
+
           <h1>Liste des procede</h1>
           <ul>
               {procedes.map((procede, index) => (
-                  <li key={index}> {procede.NomProcede} {procede.DescriptionProcede} {procede.ValidationTest}</li>
+                  <li key={index}> {procede.NomProcede} | {procede.DescriptionProcede} | {procede.ValidationTest}</li>
               ))}
           </ul>
+
+          <h1>Liste des ingredient</h1>
+          <ul>
+              {ingredients.map((ingredient, index) => (
+                  <li key={index}> {ingredient.NomIngredient} | {ingredient.DescriptionIngredient}</li>
+              ))}
+          </ul>
+
       </div>
   );
 }

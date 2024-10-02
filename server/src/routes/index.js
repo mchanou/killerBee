@@ -16,6 +16,13 @@ const editProcede = require('../models/Procede/editProcede');
 const removeProcede = require('../models/Procede/removeProcede');
 const findProcede = require('../models/Procede/findProcede');
 
+//Ingredient
+const ingredientRoutes = require('../models/Ingredient/ingredient');
+const addIngredient = require('../models/Ingredient/addIngredient');
+const editIngredient = require('../models/Ingredient/editIngredient');
+const removeIngredient = require('../models/Ingredient/removeIngredient');
+const findIngredient = require('../models/Ingredient/findIngredient');
+
 // const authRoutes = require('./authRoutes');
 
 router.use('/users', userRoutes);
@@ -29,6 +36,12 @@ router.use('/addProcede', addProcede);
 router.use('/editProcede', editProcede);
 router.use('/removeProcede', removeProcede);
 router.use('/findProcede', findProcede);
+
+router.use('/ingredient', ingredientRoutes);
+router.use('/addIngredient', addIngredient);
+router.use('/editIngredient', editIngredient);
+router.use('/removeIngredient', removeIngredient);
+router.use('/findIngredient', findIngredient);
 
 // router.use('/auth', authRoutes);
 
