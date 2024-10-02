@@ -26,6 +26,7 @@ import './App.css';
 
 function App() {
   const [users, setUsers] = useState([]);
+  const [procedes, setProcedes] = useState([]);
 
   useEffect(() => {
       // Utiliser la route '/users' pour récupérer les utilisateurs
@@ -38,12 +39,30 @@ function App() {
           });
   }, []);  
 
+
+  useEffect(() => {
+      // Utiliser la route '/users' pour récupérer les utilisateurs
+      axios.get('http://localhost:5000/api/procede')
+          .then(response => {
+            setProcedes(response.data);
+          })
+          .catch(error => {
+              console.error('Erreur lors de la récupération des utilisateurs:', error);
+          });
+  }, []);  
+
   return (
       <div>
           <h1>Liste des utilisateurs</h1>
           <ul>
               {users.map((user, index) => (
                   <li key={index}> {user.NomUser} {user.PrenomUser}</li>
+              ))}
+          </ul>
+          <h1>Liste des procede</h1>
+          <ul>
+              {procedes.map((procede, index) => (
+                  <li key={index}> {procede.NomProcede} {procede.DescriptionProcede} {procede.ValidationTest}</li>
               ))}
           </ul>
       </div>
