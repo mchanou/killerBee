@@ -5,7 +5,7 @@ const sql = require('msnodesqlv8');
 
 // Route pour obtenir tous les ingrédients
 router.get('/', (req, res) => {
-    const query = `SELECT * FROM dbo.Ingredient`;
+    const query = `SELECT * FROM Ingredient`;
 
     sql.query(connectionString, query, (err, rows) => {
         if (err) {

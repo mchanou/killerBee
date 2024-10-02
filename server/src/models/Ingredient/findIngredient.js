@@ -3,28 +3,26 @@ const express = require('express');
 const router = express.Router();
 const sql = require('msnodesqlv8');
 
-// Route pour rechercher un procédé par nom et description
+// Route pour rechercher un ingrédient par nom
 router.get('/:nom', (req, res) => {
-    const nomProcede = req.params.nom;
-    const descriptionProcede = req.params.description;
+    const nomIngredient = req.params.nom;
 
-    const query = `SELECT * FROM dbo.Procede WHERE NomProcede = ?`;
+    const query = `SELECT * FROM Ingredient WHERE NomIngredient = ?`;
 
-    sql.query(connectionString, query, [nomProcede], (err, rows) => {
+    sql.query(connectionString, query, [nomIngredient], (err, rows) => {
         if (err) {
-            console.error("Erreur lors de la récupération du procédé : ", err);
-            return res.status(500).json({ message: 'Erreur lors de la récupération du procédé.' });
+            console.error("Erreur lors de la récupération de l'ingrédient : ", err);
+            return res.status(500).json({ message: 'Erreur lors de la récupération de l\'ingrédient.' });
         }
 
-        // Vérifier si aucun procédé n'a été trouvé
+        // Vérifier si aucun ingrédient n'a été trouvé
         if (rows.length === 0) {
-            return res.status(404).json({ message: 'Procédé non trouvé.' });
+            return res.status(404).json({ message: 'Ingrédient non trouvé.' });
         }
 
-        // Retourner les détails du procédé trouvé
+        // Retourner les détails de l'ingrédient trouvé
         res.json(rows[0]);
     });
 });
 
 module.exports = router;
-

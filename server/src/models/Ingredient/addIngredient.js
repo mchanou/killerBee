@@ -12,7 +12,7 @@ router.post('/', (req, res) => {
         return res.status(400).json({ message: 'Les champs NomIngredient et DescriptionIngredient sont obligatoires.' });
     }
     
-    const query = `INSERT INTO dbo.Ingredient (NomIngredient, DescriptionIngredient) VALUES (?, ?)`;
+    const query = `INSERT INTO Ingredient (NomIngredient, DescriptionIngredient) VALUES (?, ?)`;
     const params = [NomIngredient, DescriptionIngredient];
 
     sql.query(connectionString, query, params, (err, result) => {

@@ -3,29 +3,29 @@ const express = require('express');
 const router = express.Router();
 const sql = require('msnodesqlv8'); 
 
-// Route to remove a procédé by ID
+// Route to remove an ingredient by ID
 router.delete('/:id', (req, res) => {
-    const procedeId = parseInt(req.params.id, 10);
+    const ingredientId = parseInt(req.params.id, 10);
 
     // Validate the ID
-    if (isNaN(procedeId) || procedeId <= 0) {
-        return res.status(400).json({ message: 'ID de procédé invalide.' });
+    if (isNaN(ingredientId) || ingredientId <= 0) {
+        return res.status(400).json({ message: 'ID d\'ingrédient invalide.' });
     }
 
-    const query = `DELETE FROM dbo.Procede WHERE IdProcede = ?`;
+    const query = `DELETE FROM Ingredient WHERE IdIngredient = ?`;
 
-    sql.query(connectionString, query, [procedeId], (err, result) => {
+    sql.query(connectionString, query, [ingredientId], (err, result) => {
         if (err) {
-            console.error("Erreur lors de la suppression du procédé : ", err);
-            return res.status(500).json({ message: 'Erreur lors de la suppression du procédé.' });
+            console.error("Erreur lors de la suppression de l'ingrédient : ", err);
+            return res.status(500).json({ message: 'Erreur lors de la suppression de l\'ingrédient.' });
         }
 
-        // Check if the procédé was found and deleted
+        // // Check if the ingredient was found and deleted
         // if (result.rowsAffected[0] === 0) {
-        //     return res.status(404).json({ message: 'Procédé non trouvé.' });
+        //     return res.status(404).json({ message: 'Ingrédient non trouvé.' });
         // }
 
-        res.json({ message: 'Procédé supprimé avec succès.' });
+        res.json({ message: 'Ingrédient supprimé avec succès.' });
     });
 });
 
