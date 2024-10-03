@@ -20,7 +20,7 @@ export default function Login(){
 
         const response = await authService.login(login, password)
         if (response.error){
-            enqueueSnackbar('Log in failed', {variant: "error"})
+            swal('Failed', response.error, 'error');
         }
     }
 
