@@ -18,7 +18,15 @@ class UserStorage {
                 return localStorage.getItem('user.me');
             }
     }
-}
+    }
+    getTempUser(data) {
+        if(data){
+            console.log(data)
+            localStorage.setItem('user.me', data);
+        }
+        return localStorage.getItem('user.me');    
+    }
+    
 
     removeUserProfile() {
         localStorage.removeItem('user.me');

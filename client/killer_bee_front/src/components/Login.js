@@ -18,10 +18,11 @@ export default function Login(){
             return;
         }
 
-        const response = await authService.login(login, password)
-        if (response.error){
-            swal('Failed', response.error, 'error');
-        }
+        // const response = await authService.tempLogin(login, password)
+        // if (response.error){
+        //     swal('Failed', response.error, 'error');
+        // }
+        authService.tempLogin(login, password)
     }
 
     return(

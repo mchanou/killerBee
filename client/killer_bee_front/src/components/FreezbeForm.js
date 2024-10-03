@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid2';
 import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 import {useSnackbar } from "notistack";
 import KbDialog from './KbDialog'
+import { apiPOST } from "../services/apiManager";
 
 
 const FreezbeForm = forwardRef((props, ref) =>{
@@ -65,7 +66,14 @@ const FreezbeForm = forwardRef((props, ref) =>{
     function submit(){
         if(ingList){
             setFreezbe({...freezbe, ingredients: [...freezbe.ingredients, ingList]})
-            console.log(ingList)
+            apiPOST('/', freezbe).then((rsp)=>{
+                if(rsp.statusCode === 200 && rsp.statusText === "OK"){
+                    enqueueSnackbar("Freezbe model added !", {variant: "success"})
+                }
+                else{
+                    enqueueSnackbar("Error: Freezbe model can't be added", {variant:"error"})
+                }
+            })
         }
         else{
             enqueueSnackbar("The ingredient list can't be empty", {variant: "warning"})

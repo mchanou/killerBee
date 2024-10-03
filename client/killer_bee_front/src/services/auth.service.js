@@ -20,7 +20,7 @@ class AuthService {
         };
 
         return login_axios
-            .post('/auth/login', {
+            .post('/', {
                 username: username,
                 password: password,
             })
@@ -44,6 +44,12 @@ class AuthService {
             .then(() => {
                 return state;
             });
+    }
+
+    tempLogin(login, password){
+        if(login === "lucas.kem" && password === "MdpTempToTestLogin"){
+            UserStorage.getTempUser(login)
+        }
     }
 
     forgotPassword(login) {

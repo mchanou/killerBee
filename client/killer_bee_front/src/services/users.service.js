@@ -8,7 +8,7 @@ import niAPI from './apiManager';
 
 class UsersService {
     me() {
-        return apiGET('/users/profile/user');
+        return apiGET('/prenom/nom');
     }
 
     update(data) {

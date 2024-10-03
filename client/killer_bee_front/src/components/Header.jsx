@@ -49,10 +49,6 @@ function Header() {
                 <Toolbar>
                     <div className=" flex items-center">
                         <div className="flex flex-row">
-                            <Button onClick={toggleDrawer}>
-                                {open ? <MenuOpen /> : <Menu />}
-                            </Button>
-
                             <Link to="/">
                                 <div className="flex items-center">
                                     {/* <img
@@ -85,10 +81,9 @@ function Header() {
                                     }),
                                 ]}
                             >
-                                Welcome
+                                Welcome 
                                 <span className="capitalize">
-                                    {user?.title} {user?.first_name}{' '}
-                                    {user?.last_name}
+                                    {" " +user}
                                 </span>
                             </Typography>
 

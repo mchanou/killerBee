@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid2';
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import {useSnackbar } from "notistack";
 import KbDialog from './KbDialog'
+import { apiPOST } from "../services/apiManager";
 
 const ProcedureForm=forwardRef((props, ref) =>{
 
@@ -66,8 +67,20 @@ const ProcedureForm=forwardRef((props, ref) =>{
     }
 
     function submit(){
-        console.log(procedure)
-        console.log(stepsList)
+        if(procedure.name != "" || procedure.validation != "" || procedure.description != "" || procedure.freezbeModel != ""){
+            apiPOST('/', procedure).then((rsp)=>{
+                if(rsp.statusCode === 200 && rsp.statusText === "OK"){
+                    enqueueSnackbar("Procedure created with success !", {variant: "success"})
+                    apiPOST('/', stepsList).then((rsp)=>{
+                        if(rsp.statusCode === 200 && rsp.statusText === "OK"){
+                            enqueueSnackbar("Stesp added to the procedure", {variant:"success"})
+                        }
+                    })
+                }else{
+                    enqueueSnackbar("Error: Procedure has not been created", {variant:"error"})
+                }
+            })
+        }
         setProcedure(initialValues)
     }
 
