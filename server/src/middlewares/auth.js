@@ -1,18 +1,21 @@
 const ActiveDirectory = require('activedirectory2');
 const express = require('express');
 const router = express.Router();
+require("dotenv").config({path:"../../.env"});
 
 const config = {
-    url: 'ldap://your-ldap-server.com', // Replace with your LDAP server URL
-    baseDN: 'dc=yourdomain,dc=com', // Replace with your domain's base DN
-    username: 'your-service-account@yourdomain.com', // Optional: Service account username if needed
-    password: 'your-service-account-password' // Optional: Service account password
+    url: process.env.AD_URL, // LDAP URL`
+    baseDN: `dc=${process.env.AD_DN},dc=com`, // DN
+    username: process.env.AD_USERNAME, // Usename (optional)
+    password: process.env.AD_USERNAME // Password (optiona)
 };
+
+// username and password are optional but necessary.
 
 const ad = new ActiveDirectory(config);
 
 // Route to authenticate a user
-router.post('/login', (req, res) => {
+router.post('/', (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
@@ -20,7 +23,7 @@ router.post('/login', (req, res) => {
     }
 
     // Build the user's distinguished name (DN) for authentication
-    const userPrincipalName = `${username}@yourdomain.com`; // Adjust to match your domain naming conventions
+    const userPrincipalName = `${username}@${process.env.AD_DN}`; 
 
     // Authenticate user with Active Directory
     ad.authenticate(userPrincipalName, password, (err, auth) => {
