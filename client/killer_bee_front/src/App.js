@@ -46,68 +46,68 @@ const paginationModel = { page: 0, pageSize: 5 };
 
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [procedes, setProcedes] = useState([]);
-  const [ingredients, setIngredient] = useState([]);
-  const [freezbes, setFreezbe] = useState([]);
-  const [etapes, setEtape] = useState([]);
+//   const [users, setUsers] = useState([]);
+//   const [procedes, setProcedes] = useState([]);
+//   const [ingredients, setIngredient] = useState([]);
+//   const [freezbes, setFreezbe] = useState([]);
+//   const [etapes, setEtape] = useState([]);
 
 
-  useEffect(() => {
-      // Utiliser la route '/users' pour récupérer les utilisateurs
-      axios.get('http://localhost:5000/api/users')
-          .then(response => {
-              setUsers(response.data);
-          })
-          .catch(error => {
-              console.error('Erreur lors de la récupération des utilisateurs:', error);
-          });
-  }, []);  
+//   useEffect(() => {
+//       // Utiliser la route '/users' pour récupérer les utilisateurs
+//       axios.get('http://localhost:5000/api/users')
+//           .then(response => {
+//               setUsers(response.data);
+//           })
+//           .catch(error => {
+//               console.error('Erreur lors de la récupération des utilisateurs:', error);
+//           });
+//   }, []);  
 
 
-  useEffect(() => {
-      // Utiliser la route '/users' pour récupérer les utilisateurs
-      axios.get('http://localhost:5000/api/procede')
-          .then(response => {
-            setProcedes(response.data);
-          })
-          .catch(error => {
-              console.error('Erreur lors de la récupération des utilisateurs:', error);
-          });
-  }, []);  
+//   useEffect(() => {
+//       // Utiliser la route '/users' pour récupérer les utilisateurs
+//       axios.get('http://localhost:5000/api/procede')
+//           .then(response => {
+//             setProcedes(response.data);
+//           })
+//           .catch(error => {
+//               console.error('Erreur lors de la récupération des utilisateurs:', error);
+//           });
+//   }, []);  
   
-  useEffect(() => {
-    // Utiliser la route '/users' pour récupérer les utilisateurs
-    axios.get('http://localhost:5000/api/ingredient')
-        .then(response => {
-            setIngredient(response.data);
-        })
-        .catch(error => {
-            console.error('Erreur lors de la récupération des utilisateurs:', error);
-        });
-}, []);  
+//   useEffect(() => {
+//     // Utiliser la route '/users' pour récupérer les utilisateurs
+//     axios.get('http://localhost:5000/api/ingredient')
+//         .then(response => {
+//             setIngredient(response.data);
+//         })
+//         .catch(error => {
+//             console.error('Erreur lors de la récupération des utilisateurs:', error);
+//         });
+// }, []);  
 
-useEffect(() => {
-    // Utiliser la route '/users' pour récupérer les utilisateurs
-    axios.get('http://localhost:5000/api/freezbe')
-        .then(response => {
-            setFreezbe(response.data);
-        })
-        .catch(error => {
-            console.error('Erreur lors de la récupération des utilisateurs:', error);
-        });
-}, []); 
+// useEffect(() => {
+//     // Utiliser la route '/users' pour récupérer les utilisateurs
+//     axios.get('http://localhost:5000/api/freezbe')
+//         .then(response => {
+//             setFreezbe(response.data);
+//         })
+//         .catch(error => {
+//             console.error('Erreur lors de la récupération des utilisateurs:', error);
+//         });
+// }, []); 
 
-useEffect(() => {
-    // Utiliser la route '/users' pour récupérer les utilisateurs
-    axios.get('http://localhost:5000/api/etape')
-        .then(response => {
-            setEtape(response.data);
-        })
-        .catch(error => {
-            console.error('Erreur lors de la récupération des utilisateurs:', error);
-        });
-}, []); 
+// useEffect(() => {
+//     // Utiliser la route '/users' pour récupérer les utilisateurs
+//     axios.get('http://localhost:5000/api/etape')
+//         .then(response => {
+//             setEtape(response.data);
+//         })
+//         .catch(error => {
+//             console.error('Erreur lors de la récupération des utilisateurs:', error);
+//         });
+// }, []); 
 
  
   return (
