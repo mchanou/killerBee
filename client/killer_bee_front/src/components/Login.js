@@ -1,5 +1,6 @@
 import { FormControl, TextField, Button } from '@mui/material'
 import { useSnackbar } from 'notistack'
+import swal from 'sweetalert';
 import { useState } from 'react'
 import authService from '../services/auth.service'
 
@@ -12,7 +13,8 @@ export default function Login(){
         e.preventDefault()
 
         if(!login || !password){
-            enqueueSnackbar("The form is not complete", {variant: "warning"})
+            //enqueueSnackbar("The form is not complete", {variant: "warning"})
+            swal('Failed', "The form is incomplete", 'error');
             return;
         }
 
