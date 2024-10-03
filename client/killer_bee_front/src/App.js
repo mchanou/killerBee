@@ -46,6 +46,69 @@ const paginationModel = { page: 0, pageSize: 5 };
 
 
 function App() {
+  const [users, setUsers] = useState([]);
+  const [procedes, setProcedes] = useState([]);
+  const [ingredients, setIngredient] = useState([]);
+  const [freezbes, setFreezbe] = useState([]);
+  const [etapes, setEtape] = useState([]);
+
+
+  useEffect(() => {
+      // Utiliser la route '/users' pour récupérer les utilisateurs
+      axios.get('http://localhost:5000/api/users')
+          .then(response => {
+              setUsers(response.data);
+          })
+          .catch(error => {
+              console.error('Erreur lors de la récupération des utilisateurs:', error);
+          });
+  }, []);  
+
+
+  useEffect(() => {
+      // Utiliser la route '/users' pour récupérer les utilisateurs
+      axios.get('http://localhost:5000/api/procede')
+          .then(response => {
+            setProcedes(response.data);
+          })
+          .catch(error => {
+              console.error('Erreur lors de la récupération des utilisateurs:', error);
+          });
+  }, []);  
+  
+  useEffect(() => {
+    // Utiliser la route '/users' pour récupérer les utilisateurs
+    axios.get('http://localhost:5000/api/ingredient')
+        .then(response => {
+            setIngredient(response.data);
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des utilisateurs:', error);
+        });
+}, []);  
+
+useEffect(() => {
+    // Utiliser la route '/users' pour récupérer les utilisateurs
+    axios.get('http://localhost:5000/api/freezbe')
+        .then(response => {
+            setFreezbe(response.data);
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des utilisateurs:', error);
+        });
+}, []); 
+
+useEffect(() => {
+    // Utiliser la route '/users' pour récupérer les utilisateurs
+    axios.get('http://localhost:5000/api/etape')
+        .then(response => {
+            setEtape(response.data);
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des utilisateurs:', error);
+        });
+}, []); 
+
  
   return (
     <div className="App">
@@ -61,9 +124,47 @@ function App() {
           </Route>
         </Routes>
       </Router>
-      
     </div>
   );
 }
+    {/* </div>
+      <div>
+          <h1>Liste des utilisateurs</h1>
+          <ul>
+              {users.map((user, index) => (
+                  <li key={index}> {user.PrenomUser} {user.NomUser} {user.EmailUser}</li>
+              ))}
+          </ul>
+
+          <h1>Liste des procede</h1>
+          <ul>
+              {procedes.map((procede, index) => (
+                  <li key={index}> {procede.NomProcede} | {procede.DescriptionProcede} | {procede.ValidationTest}</li>
+              ))}
+          </ul>
+
+          <h1>Liste des ingredient</h1>
+          <ul>
+              {ingredients.map((ingredient, index) => (
+                  <li key={index}> {ingredient.NomIngredient} | {ingredient.DescriptionIngredient}</li>
+              ))}
+          </ul>
+
+          <h1>Liste des Freezbe</h1>
+          <ul>
+              {freezbes.map((freezbe, index) => (
+                  <li key={index}> {freezbe.NomFreezbe} | {freezbe.DescriptionFreezbe} | {freezbe.PrixUHTFreezbe}</li>
+              ))}
+          </ul>
+
+          <h1>Liste des Etapes</h1>
+          <ul>
+              {etapes.map((etape, index) => (
+                  <li key={index}> {etape.DescriptionEtape}</li>
+              ))}
+          </ul>
+
+      </div> */}
+
 
 export default App;
