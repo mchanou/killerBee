@@ -4,8 +4,6 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import {useSnackbar } from "notistack";
 import KbDialog from './KbDialog'
 
-
-
 const ProcedureForm=forwardRef((props, ref) =>{
 
     function StepItem({index, step, onDelete}){

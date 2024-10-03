@@ -1,16 +1,10 @@
 import axios from 'axios';
-import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import AuthService from './auth.service';
-import TokenStorage from '../storage/token.storage';
 import swal from 'sweetalert';
-import { parseISO, isAfter } from 'date-fns';
-import tokenStorage from '../storage/token.storage';
-import secureLocalStorage from 'react-secure-storage';
-import userStorage from '../storage/user.storage';
+import userStorage from '../services/storage/user.storage'
 
 //export const BASE_URL = process.env.REACT_APP_BASE_URL;
 export const BASE_URL = 'http://localhost:5000';
-export const URL_REFRESH_TOKEN = '/token/refresh';
 
 const miAPI = axios.create({
     baseURL: BASE_URL,
@@ -290,90 +284,12 @@ function getRefreshToken() {
 }*/
 
 // Use interceptor to inject the token to requests
-miAPI.interceptors.request.use((request) => {
-    request.headers[
-        'Authorization'
-    ] = `Bearer ${TokenStorage.getAccessToken()}`;
-    return request;
-});
 
 // Function that will be called to refresh authorization
-const refreshAuthLogic = async (failedRequest) => {
-    // Check if the refresh token is stored in localStorage
-    const refresh_token = TokenStorage.getRefreshToken();
-    const date = parseISO(TokenStorage.getRefreshTokenExp());
-    if (!refresh_token || isAfter(new Date(), date)) {
-        let error = 'Your session has expired!';
-        //if (error.response && error.response.statusText) error = _error.response.statusText;
 
-        swal('Error', error, 'error', {
-            buttons: false,
-            timer: 2000,
-        }).then(() => {
-            userStorage.clean();
-            tokenStorage.clean();
-            localStorage.removeItem('token_refreshing');
-            window.location.href = '/login';
-            return Promise.resolve();
-        });
-    }
-
-    /** NEW code **/
-    //Check if refreshing
-    const refreshing = localStorage.getItem('token_refreshing');
-    if (refreshing === true) return Promise.resolve();
-    localStorage.setItem('token_refreshing', 'true');
-
-    //Call
-    const response = await axios
-        .post(BASE_URL + URL_REFRESH_TOKEN, {
-            //token: TokenStorage.getAccessToken(),
-            refresh_token: refresh_token,
-        })
-        .then((rsp) => {
-            if (rsp.status === 200 && rsp.statusText === 'OK') {
-                // Update the access token and refresh token in localStorage
-                TokenStorage.setAccessToken(response.data.access_token);
-                TokenStorage.setRefreshToken(response.data.refresh_token);
-
-                // Update the Authorization header of the failed request with the new access token
-                failedRequest.response.config.headers['Authorization'] =
-                    'Bearer ' + response.data.access_token;
-
-                // Notify other tabs that the token has been refreshed
-                localStorage.setItem(
-                    'tmp_access_token',
-                    response.data.access_token
-                );
-                localStorage.setItem(
-                    'tmp_refresh_token',
-                    response.data.refresh_token
-                );
-                localStorage.setItem('token_refreshed', Date.now().toString());
-
-                return Promise.resolve();
-            } else {
-                let error = 'Your session has expired!';
-                //if (error.response && error.response.statusText) error = _error.response.statusText;
-
-                swal('Error', error, 'error', {
-                    buttons: false,
-                    timer: 2000,
-                });
-
-                AuthService.logout();
-                // Clear the refreshing flag
-                localStorage.setItem('token_refreshing', 'false');
-                return Promise.reject();
-            }
-        });
 
     //Don't display error when not logged in
-    const token = TokenStorage.getAccessToken();
-    if (!token) {
-        AuthService.logout();
-        return Promise.reject();
-    }
+ 
 
     /** NEW code **/
 
@@ -429,26 +345,10 @@ const refreshAuthLogic = async (failedRequest) => {
             // Clear the refreshing flag
             localStorage.setItem("token_refreshing", "false");
         });;*/
-};
+
 
 // Listen for the storage event on window
-window.addEventListener('storage', (event) => {
-    if (event.key === 'token_refreshed') {
-        //Get temp token
-        const accessToken = localStorage.getItem('tmp_access_token');
-        const refreshToken = localStorage.getItem('tmp_refresh_token');
 
-        //Update Token
-        if (accessToken != null && refreshToken != null) {
-            TokenStorage.setAccessToken(accessToken);
-            TokenStorage.setRefreshToken(refreshToken);
-        }
-
-        //Clean tmp
-        localStorage.removeItem('tmp_access_token');
-        localStorage.removeItem('tmp_refresh_token');
-    }
-});
 
 // // Chech refresh token expiration date
 // document.addEventListener('DOMContentLoaded', () => {
@@ -463,8 +363,5 @@ window.addEventListener('storage', (event) => {
 // });
 
 // Instantiate the interceptor
-createAuthRefreshInterceptor(miAPI, refreshAuthLogic, {
-    statusCodes: [401, 403],
-});
 
 export default miAPI;

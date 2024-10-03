@@ -1,8 +1,12 @@
 import './App.css';
 
-
 import * as React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Tabs from './components/KbTabs.js'
+import Login from './components/Login.js'
+import PrivateRoute from './routes/PrivateRoute';
+import PublicRoute from './routes/PublicRoute';
+import Header from './components/Header';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -45,9 +49,19 @@ function App() {
  
   return (
     <div className="App">
-      <header className="App-header">
-        <Tabs></Tabs>
-      </header>
+      <Router>
+        <Routes>
+          <Route path="/" element={<PrivateRoute />}>
+          <Route path="/" element={<Header/>}>
+          <Route path="/" element={<Tabs />}></Route>
+          </Route>
+          </Route>
+          <Route path="/" element={<PublicRoute />}>
+          <Route path="/login" element={<Login />}></Route>
+          </Route>
+        </Routes>
+      </Router>
+      
     </div>
   );
 }
