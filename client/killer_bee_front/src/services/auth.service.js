@@ -12,39 +12,6 @@ const login_axios = axios.create({
 });
 
 class AuthService {
-    config() {
-        let state = {
-            items: [],
-            error: '',
-        };
-
-        return login_axios
-            .get('auth/config')
-            .then((response) => {
-                if (response.status === 200) {
-                    state.items = response.data;
-                } else {
-                    state.error = 'Unknown error';
-                }
-            })
-            .catch((error) => {
-                state.error = 'Unknown error';
-                if (error.response) {
-                    state.error = error.response.data.error || error.message;
-                    if (
-                        error.response.status === 401 ||
-                        error.response.status === 403
-                    )
-                        return state;
-                } else if (error.message) {
-                    state.error = error.message;
-                }
-            })
-            .then(() => {
-                return state;
-            });
-    }
-
     login(username, password) {
         let state = {
             items: [],
