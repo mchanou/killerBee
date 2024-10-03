@@ -1,5 +1,6 @@
 require("dotenv").config({ path: "../../.env" });
 
+
 // Check if environment variables are loaded
 if (!process.env.AD_URL || !process.env.AD_DN || !process.env.AD_USERNAME || !process.env.AD_PASSWORD) {
     console.error("Missing environment variables. Please check the .env file.");
@@ -11,8 +12,8 @@ const express = require('express');
 const router = express.Router();
 
 const config = {
-    url: process.env.AD_URL,
-    baseDN: `dc=${process.env.AD_DN},dc=com`,
+    url: `ldap://${process.env.AD_URL}`, // Ensure URL and port are correct
+    baseDN: `dc=${process.env.AD_DN},dc=com`, // Adjust this if your domain structure is different
     username: process.env.AD_USERNAME,
     password: process.env.AD_PASSWORD
 };
@@ -30,7 +31,8 @@ router.post('/', (req, res) => {
         return res.status(400).json({ message: 'Username and password are required.' });
     }
 
-    const userPrincipalName = `${username}@${process.env.AD_DN}`;
+    // Construct the user principal name. Adjust as necessary based on your AD configuration
+    const userPrincipalName = `${username}@${process.env.AD_DN}.com`; 
 
     ad.authenticate(userPrincipalName, password, (err, auth) => {
         if (err) {
