@@ -1,16 +1,23 @@
+require("dotenv").config({ path: "../../.env" });
+
+// Check if environment variables are loaded
+if (!process.env.AD_URL || !process.env.AD_DN || !process.env.AD_USERNAME || !process.env.AD_PASSWORD) {
+    console.error("Missing environment variables. Please check the .env file.");
+    process.exit(1);
+}
+
 const ActiveDirectory = require('activedirectory2');
 const express = require('express');
 const router = express.Router();
-require("dotenv").config({path:"../../.env"});
 
 const config = {
-    url: process.env.AD_URL, // LDAP URL`
-    baseDN: `dc=${process.env.AD_DN},dc=com`, // DN
-    username: process.env.AD_USERNAME, // Usename (optional)
-    password: process.env.AD_USERNAME // Password (optiona)
+    url: process.env.AD_URL,
+    baseDN: `dc=${process.env.AD_DN},dc=com`,
+    username: process.env.AD_USERNAME,
+    password: process.env.AD_PASSWORD
 };
 
-// username and password are optional but necessary.
+console.log("Active Directory configuration:", config);
 
 const ad = new ActiveDirectory(config);
 
@@ -19,13 +26,12 @@ router.post('/', (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
+        console.error("Username and password are required.");
         return res.status(400).json({ message: 'Username and password are required.' });
     }
 
-    // Build the user's distinguished name (DN) for authentication
-    const userPrincipalName = `${username}@${process.env.AD_DN}`; 
+    const userPrincipalName = `${username}@${process.env.AD_DN}`;
 
-    // Authenticate user with Active Directory
     ad.authenticate(userPrincipalName, password, (err, auth) => {
         if (err) {
             console.error('Authentication failed:', err);
@@ -33,12 +39,13 @@ router.post('/', (req, res) => {
         }
 
         if (auth) {
+            console.log("Authenticated successfully");
             return res.status(200).json({ message: 'Authenticated successfully' });
         } else {
+            console.error("Invalid username or password.");
             return res.status(401).json({ message: 'Authentication failed. Invalid username or password.' });
         }
     });
 });
 
 module.exports = router;
-

@@ -51,7 +51,7 @@ const editFreezbeIngredient = require('../models/Freezbe_ingredient/edit_freezbe
 const removeFreezbeIngredient = require('../models/Freezbe_ingredient/remove_freezbe_ingredient');
 // const findFreezbeIngredient = require('../models/Procede_etape/find_procede_etape');
 
-// const authRoutes = require('./authRoutes');
+const authRoutes = require('../middlewares/auth');
 
 router.use('/users', userRoutes);
 router.use('/addUsers', addUser);
@@ -93,6 +93,6 @@ router.use('/add_freezbe_ingredient', addFreezbeIngredient);
 router.use('/edit_freezbe_ingredient', editFreezbeIngredient);
 router.use('/remove_freezbe_ingredient', removeFreezbeIngredient);
 
-// router.use('/auth', authRoutes);
+router.use('/auth', authRoutes);
 
 module.exports = router;
