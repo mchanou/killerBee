@@ -16,7 +16,7 @@ const IngredientForm = forwardRef((props, ref) =>{
     const [ingredient, setIngredient] = useState(initialIngredient)
 
     function submit(){
-        apiPOST('/', ingredient).then((rsp)=>{
+        apiPOST('/api/addIngredient', ingredient).then((rsp)=>{
             if(rsp.statusCode === 200 && rsp.statusText === "OK"){
                 enqueueSnackbar("Ingredient added !", {variant: "success"})
             }

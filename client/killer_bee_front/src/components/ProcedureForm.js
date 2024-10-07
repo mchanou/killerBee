@@ -68,12 +68,12 @@ const ProcedureForm=forwardRef((props, ref) =>{
 
     function submit(){
         if(procedure.name != "" || procedure.validation != "" || procedure.description != "" || procedure.freezbeModel != ""){
-            apiPOST('/', procedure).then((rsp)=>{
+            apiPOST('/api/addProcede', procedure).then((rsp)=>{
                 if(rsp.statusCode === 200 && rsp.statusText === "OK"){
                     enqueueSnackbar("Procedure created with success !", {variant: "success"})
-                    apiPOST('/', stepsList).then((rsp)=>{
+                    apiPOST('/api/addEtape', stepsList).then((rsp)=>{
                         if(rsp.statusCode === 200 && rsp.statusText === "OK"){
-                            enqueueSnackbar("Stesp added to the procedure", {variant:"success"})
+                            enqueueSnackbar("Steps added to the procedure", {variant:"success"})
                         }
                     })
                 }else{

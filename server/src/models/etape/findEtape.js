@@ -16,8 +16,7 @@ router.get('/:id', (req, res) => {
     const query = `
         SELECT e.IdEtape, e.DescriptionEtape, pe.NumEtape
         FROM dbo.Etape e
-        INNER JOIN dbo.Procede_etape pe ON e.IdEtape = pe.IdEtape
-        WHERE pe.IdProcede = ?
+        WHERE e.IdProcede = ?
         ORDER BY pe.NumEtape ASC`;
 
     sql.query(connectionString, query, [procedeId], (err, rows) => {

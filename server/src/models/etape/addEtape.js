@@ -5,22 +5,22 @@ const sql = require('msnodesqlv8');
 
 // Route pour ajouter une Étape
 router.post('/', (req, res) => {
-    let { DescriptionEtape } = req.body;
+    const stepList = req.body;
 
     // Validation des données
-    if (!DescriptionEtape) {
-        return res.status(400).json({ message: 'Le champ DescriptionEtape est obligatoire.' });
+    if (!Array.isArray(stepList)) {
+        return res.status(400).json({ message: 'Format de données invalide.'});
     }
     
-    const query = `INSERT INTO Etape (DescriptionEtape) VALUES (?)`;
-    const params = [DescriptionEtape];
+    const query = `INSERT INTO Etape (NomEtape, DescriptionEtapen NumEtape, IdProcede) VALUES (?)`;
+    const params = stepList.map(obj => [obj.stepName, obj.stepDesc, obj.stepNumber, obj.IdProcede]);
 
-    sql.query(connectionString, query, params, (err, result) => {
+    sql.query(connectionString, query, params, (err) => {
         if (err) {
             console.error("Erreur lors de l'insertion de l'Étape : ", err);
             return res.status(500).json({ message: 'Erreur lors de l\'ajout de l\'Étape.' });
         }
-        res.status(201).json({ message: 'Étape ajoutée avec succès.', etapeId: result.insertId });
+        res.status(201).json({ message: 'Étape ajoutée avec succès.'});
     });
 });
 

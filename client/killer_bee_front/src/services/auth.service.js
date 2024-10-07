@@ -20,7 +20,7 @@ class AuthService {
         };
 
         return login_axios
-            .post('/', {
+            .post('/api/auth', {
                 username: username,
                 password: password,
             })

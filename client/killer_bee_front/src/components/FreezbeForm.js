@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid2';
 import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 import {useSnackbar } from "notistack";
 import KbDialog from './KbDialog'
-import { apiPOST } from "../services/apiManager";
+import { apiGET, apiPOST } from "../services/apiManager";
 
 
 const FreezbeForm = forwardRef((props, ref) =>{
@@ -16,22 +16,10 @@ const FreezbeForm = forwardRef((props, ref) =>{
         "name": "",
         "description": "",
         "freezbePrice": "",
-        "productLine": "",
-        "ingredients": []
+        "productLine": ""
     }
     const [freezbe, setFreezbe] = useState(initialFreezbe)
-    const [sampleIngList, setSampleIngList] = useState([
-        {
-            "id" : 1,
-            "name": "Plastic",
-            "description": "description"
-        },
-        {
-            "id": 2,
-            "name": "Rubber",
-            "description": "this is a description"
-        }
-    ])
+    const [sampleIngList, setSampleIngList] = useState([])
 
     function handleChange(e){
        setSelectedId(e.target.value)
@@ -66,7 +54,7 @@ const FreezbeForm = forwardRef((props, ref) =>{
     function submit(){
         if(ingList){
             setFreezbe({...freezbe, ingredients: [...freezbe.ingredients, ingList]})
-            apiPOST('/', freezbe).then((rsp)=>{
+            apiPOST('/api/addFreezbe', freezbe).then((rsp)=>{
                 if(rsp.statusCode === 200 && rsp.statusText === "OK"){
                     enqueueSnackbar("Freezbe model added !", {variant: "success"})
                 }
@@ -87,6 +75,17 @@ const FreezbeForm = forwardRef((props, ref) =>{
 
         }
     }, [props.open])
+
+    useEffect(()=>{
+        apiGET("/api/ingredients").then((rsp)=>{
+            if(rsp.statusCode === 200 && rsp.statusText === "OK"){
+                setSampleIngList(rsp.items)
+            }
+            else{
+                setSampleIngList({"name": "No ingredients found"})
+            }
+        })
+    }, [])
 
     return (
         <>
