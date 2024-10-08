@@ -35,8 +35,8 @@ export default function Login(){
             </h1>
         <FormControl sx={{margin: 2}}>
         <div className="flex flex-col space-y-4">
-            <div><TextField required placeholder="Enter your login" fullWidth label="Login" variant='outlined' value={login} onChange={(e)=>setLogin(e.target.value)}></TextField></div>
-            <div><TextField required placeholder="Enter your password" fullWidth label="Password" type='password' value={password} variant="outlined" onChange={(e)=>setPassword(e.target.value)}></TextField></div>
+            <div><TextField required placeholder="Enter your login" fullWidth label="Login" variant='outlined' value={login} onChange={(e)=>setLogin(e.target.value)}/></div>
+            <div><TextField required placeholder="Enter your password" fullWidth label="Password" type='password' value={password} variant="outlined" onChange={(e)=>setPassword(e.target.value)}/></div>
             <div><Button variant="contained" onClick={submitLogin}>Sign in</Button></div>
         </div>
         </FormControl>

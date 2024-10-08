@@ -10,8 +10,8 @@ const IngredientForm = forwardRef((props, ref) =>{
 
     const {enqueueSnackbar} = useSnackbar();
     const initialIngredient =  {
-        "name": "",
-        "description": ""
+        "NomIngredient": "",
+        "DescriptionIngredient": ""
     }
     const [ingredient, setIngredient] = useState(initialIngredient)
 
@@ -19,11 +19,13 @@ const IngredientForm = forwardRef((props, ref) =>{
         apiPOST('/api/addIngredient', ingredient).then((rsp)=>{
             if(rsp.statusCode === 200 && rsp.statusText === "OK"){
                 enqueueSnackbar("Ingredient added !", {variant: "success"})
+                props.onClose()
             }
             else{
                 enqueueSnackbar("Error: Ingredient not added", {variant: "error"})
             }
         })
+        //console.log(ingredient)
     }
     
    function handleChange(id, value){
@@ -59,10 +61,13 @@ const IngredientForm = forwardRef((props, ref) =>{
         <FormControl fullWidth>
             <Grid container spacing={2}>
             <Grid size={12}>
-            <TextField required label= "Name" variant="outlined" placeholder="Enter a name" onChange={(e)=>handleChange("name", e.target.value)} fullWidth/>
+            <TextField required label="Name" variant="outlined" placeholder="Enter a name" onChange={(e)=>handleChange("NomIngredient", e.target.value)} fullWidth/>
             </Grid>
             <Grid size={12}>
-            <TextField required multiline label= "Description" variant="outlined" placeholder="Enter a description" rows={4} onChange={(e)=>handleChange("description", e.target.value)} fullWidth/>
+            <TextField required multiline label="Description" variant="outlined" placeholder="Enter a description" rows={4} 
+            onChange={(e)=>handleChange("DescriptionIngredient", e.target.value)} 
+            fullWidth 
+            />
             </Grid>
             </Grid>
         </FormControl>

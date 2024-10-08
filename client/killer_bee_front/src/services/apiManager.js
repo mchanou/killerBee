@@ -9,7 +9,7 @@ export const BASE_URL = 'http://localhost:5000';
 const miAPI = axios.create({
     baseURL: BASE_URL,
     timeout: 10000,
-    withCredentials: true,
+    //withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -271,7 +271,7 @@ const networkError = (message, timer) => {
         buttons: false,
         timer: { timer },
     }).then(() => {
-        AuthService.logout();
+        //AuthService.logout();
     });
 };
 

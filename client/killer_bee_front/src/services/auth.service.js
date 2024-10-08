@@ -161,15 +161,15 @@ class AuthService {
             });
     }
 
-    logout() {
-        api.post('token/logout', {}).then(() => {
-            //Clean all local storage
-            localStorage.clear();
-            UserStorage.clean();
+    // logout() {
+    //     api.post('token/logout', {}).then(() => {
+    //         //Clean all local storage
+    //         localStorage.clear();
+    //         UserStorage.clean();
 
-            window.location.href = '/login';
-        });
-    }
+    //         window.location.href = '/login';
+    //     });
+    // }
 }
 
 export default new AuthService();

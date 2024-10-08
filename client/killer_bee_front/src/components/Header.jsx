@@ -16,11 +16,13 @@ import {
     Button,
     Drawer,
 } from '@mui/material';
-import { NavLink, Link, Outlet } from 'react-router-dom';
+import {Link, Outlet } from 'react-router-dom';
 import * as React from 'react';
 import { useState, useContext } from 'react';
 import UserContext from '../services/UserContext';
 import authService from '../services/auth.service';
+import { blue } from '@mui/material/colors';
+import KillerBeeLogo from '../assets/killerBeeLogo.png'
 
 function Header() {
     const theme = useTheme();
@@ -42,7 +44,7 @@ function Header() {
             <AppBar
                 position="static"
                 sx={(theme) => ({
-                    backgroundColor: theme.palette.secondary.dark,
+                    backgroundColor: blue,
                     borderRadius: 1,
                 })}
             >
@@ -51,18 +53,15 @@ function Header() {
                         <div className="flex flex-row">
                             <Link to="/">
                                 <div className="flex items-center">
-                                    {/* <img
+                                    <img
                                         className="h-20 w-55"
-                                        src={PerennityLogo}
-                                        alt="Perennity Logo"
-                                    /> */}
+                                        src={KillerBeeLogo}
+                                        alt="KillerBee Logo"
+                                    />
 
                                     <Typography
                                         variant="h5"
                                         component="h1"
-                                        style={{
-                                            color: theme.palette.primary.light,
-                                        }}
                                     >
                                         KillerBee
                                     </Typography>
@@ -75,10 +74,8 @@ function Header() {
                                 component="div"
                                 variant="h6"
                                 sx={[
-                                    { display: { xs: 'block' } },
-                                    (theme) => ({
-                                        color: theme.palette.primary.light,
-                                    }),
+                                    { display: { xs: 'block' } }
+                                    
                                 ]}
                             >
                                 Welcome 
@@ -87,7 +84,7 @@ function Header() {
                                 </span>
                             </Typography>
 
-                            <IconButton
+                            {/* <IconButton
                                 size="small"
                                 disableFocusRipple
                                 sx={(theme) => ({
@@ -139,7 +136,7 @@ function Header() {
                                         ]}
                                     />
                                 </Link>
-                            </IconButton>
+                            </IconButton> */}
                         </div>
                     </div>
                 </Toolbar>

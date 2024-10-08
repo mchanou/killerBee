@@ -77,12 +77,9 @@ const FreezbeForm = forwardRef((props, ref) =>{
     }, [props.open])
 
     useEffect(()=>{
-        apiGET("/api/ingredients").then((rsp)=>{
+        apiGET("/api/ingredient").then((rsp)=>{
             if(rsp.statusCode === 200 && rsp.statusText === "OK"){
                 setSampleIngList(rsp.items)
-            }
-            else{
-                setSampleIngList({"name": "No ingredients found"})
             }
         })
     }, [])
@@ -122,11 +119,11 @@ const FreezbeForm = forwardRef((props, ref) =>{
                 <Grid size={8}>
                     <TextField select label="Ingredient" variant="outlined" fullWidth id="ingSelect" value={selectedId} onChange={handleChange}>
                         <MenuItem value="" disabled>Select an ingredient</MenuItem>
-                        {sampleIngList.map((sampleIng)=>{
+                        {sampleIngList ? sampleIngList.map((sampleIng)=>{
                             return(
                                 <MenuItem value ={sampleIng.id} key={sampleIng.id} disabled={ingList.some(selected => selected.id === sampleIng.id)}>{sampleIng.name}</MenuItem>
                             )
-                        })}
+                        }): <MenuItem value="" disabled>No ingredient found</MenuItem>}
                     </TextField>
                         </Grid>
                 <Grid size={4}><TextField label = "Grammage" variant="outlined" placeholder="Enter the grammage" name="grammage" value={grammage} onChange={handleGrammage} fullWidth></TextField></Grid>
