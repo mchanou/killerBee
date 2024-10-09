@@ -51,7 +51,8 @@ function Header() {
                 <Toolbar>
                     <div className=" flex items-center">
                         <div className="flex flex-row">
-                            <Link to="/">
+                            {/* <Link to="/">
+                            </Link> */}
                                 <div className="flex items-center">
                                     <img
                                         className="h-20 w-55"
@@ -66,7 +67,7 @@ function Header() {
                                         KillerBee
                                     </Typography>
                                 </div>
-                            </Link>
+                            
                         </div>
 
                         <div className="flex items-center absolute right-2">
@@ -80,7 +81,7 @@ function Header() {
                             >
                                 Welcome 
                                 <span className="capitalize">
-                                    {" " +user}
+                                    {user ? user : " User"}
                                 </span>
                             </Typography>
 

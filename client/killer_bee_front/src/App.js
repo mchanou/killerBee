@@ -112,7 +112,7 @@ function App() {
  
   return (
     <div className="App">
-      <Router>
+      {/* <Router>
         <Routes>
           <Route path="/" element={<PrivateRoute />}>
           <Route path="/" element={<Header/>}>
@@ -123,7 +123,10 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           </Route>
         </Routes>
-      </Router>
+      </Router> */}
+      <Header/>
+        <Tabs/>
+     
     </div>
   );
 }
