@@ -13,7 +13,7 @@ const router = express.Router();
 const config = {
     url: process.env.AD_URL,
     baseDN: `dc=${process.env.AD_DN},dc=com`,
-    login: process.env.AD_USERNAME,
+    username: process.env.AD_USERNAME,
     password: process.env.AD_PASSWORD
 };
 
@@ -23,14 +23,14 @@ const ad = new ActiveDirectory(config);
 
 // Route to authenticate a user
 router.post('/', (req, res) => {
-    const { login, password } = req.body;
+    const { username, password } = req.body;
 
-    if (!login || !password) {
+    if (!username || !password) {
         console.error("Username and password are required.");
         return res.status(400).json({ message: 'Username and password are required.' });
     }
 
-    const userPrincipalName = `${login}@${process.env.AD_DN}`;
+    const userPrincipalName = `${username}@${process.env.AD_DN}`;
 
     ad.authenticate(userPrincipalName, password, (err, auth) => {
         if (err) {
@@ -42,8 +42,8 @@ router.post('/', (req, res) => {
             console.log("Authenticated successfully");
             return res.status(200).json({ message: 'Authenticated successfully' });
         } else {
-            console.error("Invalid login or password.");
-            return res.status(401).json({ message: 'Authentication failed. Invalid login or password.' });
+            console.error("Invalid username or password.");
+            return res.status(401).json({ message: 'Authentication failed. Invalid username or password.' });
         }
     });
 });

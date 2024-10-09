@@ -46,12 +46,6 @@ class AuthService {
             });
     }
 
-    tempLogin(login, password){
-        if(login === "lucas.kem" && password === "MdpTempToTestLogin"){
-            UserStorage.getTempUser(login)
-        }
-    }
-
     forgotPassword(login) {
         let state = {
             items: [],
