@@ -25,7 +25,6 @@ const IngredientForm = forwardRef((props, ref) =>{
                 enqueueSnackbar("Error: Ingredient not added", {variant: "error"})
             }
         })
-        //console.log(ingredient)
     }
     
    function handleChange(id, value){

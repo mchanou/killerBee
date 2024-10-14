@@ -13,10 +13,11 @@ const FreezbeForm = forwardRef((props, ref) =>{
     const [selectedId, setSelectedId] = useState('')
     const [ingList, setIngList] = useState([])
     const initialFreezbe = {
-        "name": "",
-        "description": "",
-        "freezbePrice": "",
-        "productLine": ""
+        "NomFreezbe": "",
+        "DescriptionFreezbe": "",
+        "PrixUHTFreezbe": "",
+        "GammeFreezbe": "",
+        "IngredientsList": []
     }
     const [freezbe, setFreezbe] = useState(initialFreezbe)
     const [sampleIngList, setSampleIngList] = useState([])
@@ -40,21 +41,20 @@ const FreezbeForm = forwardRef((props, ref) =>{
             enqueueSnackbar("The grammage can't be zero", {variant: "warning"})
         }
         else if(grammage && selectedId){
-            const selectedItem = sampleIngList.find(item => item.id === selectedId)
+            const selectedItem = sampleIngList.find(item => item.IdIngredient === selectedId)
             const ing = {
                 ...selectedItem,
-                grammage: grammage
+                Grammage: grammage
             }
             setIngList([...ingList, ing])
             setGrammage('')
             setSelectedId('')
-            
+             
         }
     }
     function submit(){
         if(ingList){
-            setFreezbe({...freezbe, ingredients: [...freezbe.ingredients, ingList]})
-            apiPOST('/api/addFreezbe', freezbe).then((rsp)=>{
+        apiPOST('/api/addFreezbe', freezbe).then((rsp)=>{
                 if(rsp.statusCode === 200 && rsp.statusText === "OK"){
                     enqueueSnackbar("Freezbe model added !", {variant: "success"})
                 }
@@ -66,6 +66,7 @@ const FreezbeForm = forwardRef((props, ref) =>{
         else{
             enqueueSnackbar("The ingredient list can't be empty", {variant: "warning"})
         }
+        
     }
 
     useEffect(()=>{
@@ -77,9 +78,16 @@ const FreezbeForm = forwardRef((props, ref) =>{
     }, [props.open])
 
     useEffect(()=>{
+        if(ingList){
+            setFreezbe({...freezbe, IngredientsList: ingList})
+        }
+    }, [ingList])
+
+    useEffect(()=>{
         apiGET("/api/ingredient").then((rsp)=>{
             if(rsp.statusCode === 200 && rsp.statusText === "OK"){
                 setSampleIngList(rsp.items)
+                props.onClose()
             }
         })
     }, [])
@@ -105,37 +113,37 @@ const FreezbeForm = forwardRef((props, ref) =>{
         <FormControl sx={{margin: 2}}>
             <Grid container spacing={2}>
             <Grid size={12}>
-                <TextField required label= "Name" variant="outlined" placeholder="Enter a name" fullWidth onChange={(e)=>handleFreezbe("name", e.target.value)}/>
+                <TextField required label= "Name" variant="outlined" placeholder="Enter a name" fullWidth onChange={(e)=>handleFreezbe("NomFreezbe", e.target.value)}/>
             </Grid>
             <Grid size={12}>
-                <TextField required multiline label= "Description" variant="outlined" placeholder="Enter a description" rows={4} fullWidth onChange={(e)=>handleFreezbe("description", e.target.value)}/>
+                <TextField required multiline label= "Description" variant="outlined" placeholder="Enter a description" rows={4} fullWidth onChange={(e)=>handleFreezbe("DescriptionFreezbe", e.target.value)}/>
             </Grid>
             <Grid size={4}>
-                    <TextField required label="Price" variant="outlined" placeholder="Enter the price" fullWidth onChange={(e)=>handleFreezbe("freezbePrice", e.target.value)}/>
+                    <TextField required label="Price" variant="outlined" placeholder="Enter the price" fullWidth onChange={(e)=>handleFreezbe("PrixUHTFreezbe", e.target.value)}/>
                 </Grid>
                 <Grid size={8}>
-                    <TextField required label = "Product Line" variant="outlined" placeholder="Enter the product line" fullWidth onChange={(e)=>handleFreezbe("productLine", e.target.value)}/>
+                    <TextField required label = "Product Line" variant="outlined" placeholder="Enter the product line" fullWidth onChange={(e)=>handleFreezbe("GammeFreezbe", e.target.value)}/>
                 </Grid>
                 <Grid size={8}>
                     <TextField select label="Ingredient" variant="outlined" fullWidth id="ingSelect" value={selectedId} onChange={handleChange}>
                         <MenuItem value="" disabled>Select an ingredient</MenuItem>
                         {sampleIngList ? sampleIngList.map((sampleIng)=>{
                             return(
-                                <MenuItem value ={sampleIng.id} key={sampleIng.id} disabled={ingList.some(selected => selected.id === sampleIng.id)}>{sampleIng.name}</MenuItem>
+                                <MenuItem value ={sampleIng.IdIngredient} key={sampleIng.IdIngredient} disabled={ingList.some(selected => selected.IdIngredient === sampleIng.IdIngredient)}>{sampleIng.NomIngredient}</MenuItem>
                             )
                         }): <MenuItem value="" disabled>No ingredient found</MenuItem>}
                     </TextField>
                         </Grid>
                 <Grid size={4}><TextField label = "Grammage" variant="outlined" placeholder="Enter the grammage" name="grammage" value={grammage} onChange={handleGrammage} fullWidth></TextField></Grid>
                 <Grid size={12}><Button variant="contained" onClick={addIng}>Add ingredient to the list</Button></Grid>
-                <Grid size={12}><Button variant="contained" onClick={()=>{console.log(freezbe)}}>Test Button</Button></Grid>
+                {/* <Grid size={12}><Button variant="contained" onClick={()=>{console.log(freezbe)}}>Test Button</Button></Grid> */}
             <Grid size={12}>
             <Box sx={{borderRadius:1, bgcolor:"#eeeeee", height:200}}>
             {/* <Typography variant="h5" marginLeft={2}>Ingredient List</Typography> */}
             <Stack direction="row" spacing={1} padding={1}>
             {ingList.map((ing)=>{
                        return(
-                        <Chip label={ing.name + " : "+ ing.grammage+"cg"} onDelete={()=>{setIngList(ingList.filter(a => a.id !== ing.id))}}></Chip>
+                        <Chip label={ing.NomIngredient + " : "+ ing.Grammage+"cg"} onDelete={()=>{setIngList(ingList.filter(a => a.IdIngredient !== ing.IdIngredient))}}></Chip>
                        )
                 })}
             </Stack>

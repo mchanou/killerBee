@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
             console.error("Erreur lors de l'insertion de l'Étape : ", err);
             return res.status(500).json({ message: 'Erreur lors de l\'ajout de l\'Étape.' });
         }
-        res.status(201).json({ message: 'Étape ajoutée avec succès.'});
+        res.status(200).json({ message: 'Étape ajoutée avec succès.'});
     });
 });
 
