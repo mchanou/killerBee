@@ -7,17 +7,25 @@ class UserStorage {
         if (user) return true;
         return false;
     }
-    async getUser() {
-        let user = localStorage.getItem('user.me')
-        if (user) {
-            return user;
-        } else {
-            const response = await UsersService.me();
-            if (response.statusCode === 200 && response.statusText === 'OK') {
-                localStorage.setItem('user.me', response.items);
-                return localStorage.getItem('user.me');
-            }
+    // async getUser() {
+    //     let user = localStorage.getItem('user.me')
+    //     if (user) {
+    //         return user;
+    //     } else {
+    //         const response = await UsersService.me();
+    //         if (response.statusCode === 200 && response.statusText === 'OK') {
+    //             localStorage.setItem('user.me', response.items);
+    //             return localStorage.getItem('user.me');
+    //         }
+    // }
+    // }
+
+    getUser(){
+        return localStorage.getItem('user.me')
     }
+
+    setUser(user){
+        localStorage.setItem('user.me', user)
     }
 
     removeUserProfile() {

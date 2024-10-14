@@ -57,6 +57,7 @@ const FreezbeForm = forwardRef((props, ref) =>{
         apiPOST('/api/addFreezbe', freezbe).then((rsp)=>{
                 if(rsp.statusCode === 200 && rsp.statusText === "OK"){
                     enqueueSnackbar("Freezbe model added !", {variant: "success"})
+                    props.onClose()
                 }
                 else{
                     enqueueSnackbar("Error: Freezbe model can't be added", {variant:"error"})
@@ -87,7 +88,7 @@ const FreezbeForm = forwardRef((props, ref) =>{
         apiGET("/api/ingredient").then((rsp)=>{
             if(rsp.statusCode === 200 && rsp.statusText === "OK"){
                 setSampleIngList(rsp.items)
-                props.onClose()
+                
             }
         })
     }, [])

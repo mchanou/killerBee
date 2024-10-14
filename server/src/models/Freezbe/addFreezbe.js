@@ -60,7 +60,6 @@ router.post('/', (req, res) => {
                 res.status(200).json({ message: 'Freezbe et ses ingrédients ajoutés avec succès.'});
             })
         
-        
         })
         
 

@@ -6,6 +6,8 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import KbTable from './KbTable';
+import { Button } from '@mui/material';
+import authService from '../services/auth.service';
 
 
 export default function Tabs() {
@@ -15,6 +17,10 @@ export default function Tabs() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  function logout(){
+    authService.logout();
+  }
 
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -36,6 +42,7 @@ export default function Tabs() {
           <KbPanel type="procedure"/>
         </TabPanel>
       </TabContext>
+      <Button variant='contained' onClick={logout}>Log out</Button>
     </Box>
   );
 }

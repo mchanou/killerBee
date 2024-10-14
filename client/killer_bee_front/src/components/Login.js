@@ -2,6 +2,7 @@ import { FormControl, TextField, Button } from '@mui/material'
 import { useSnackbar } from 'notistack'
 import swal from 'sweetalert';
 import { useState } from 'react'
+import sha512 from 'js-sha512';
 import authService from '../services/auth.service'
 
 export default function Login(){
@@ -18,11 +19,12 @@ export default function Login(){
             return;
         }
 
-        // const response = await authService.tempLogin(login, password)
-        // if (response.error){
-        //     swal('Failed', response.error, 'error');
-        // }
-        authService.tempLogin(login, password)
+        const response = await authService.login(login, sha512(password))
+        if (response.error){
+            swal('Failed', response.error, 'error');
+        }
+        window.location.href = '/';
+       
     }
 
     return(

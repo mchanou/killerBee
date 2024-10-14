@@ -7,15 +7,19 @@ import Loading from '../components/Loading';
 const PrivateRoute = () => {
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(false);
-    const [logged, setLogged] = useState(true);
+    const [logged, setLogged] = useState(false);
 
     //Load user and settings data
     function loadUser() {
         if(!logged){
             setLoading(true);
-            userStorage.getUser().then((rsp) => {
-                setUser(rsp);
-            });
+            // userStorage.getUser().then((rsp) => {
+            //     setUser(rsp);
+            // });
+            const rsp = userStorage.getUser()
+            if(rsp){
+                setUser(rsp)
+            }
             setLoading(false);
         }
     }
