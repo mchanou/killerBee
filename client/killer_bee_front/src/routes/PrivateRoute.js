@@ -7,33 +7,33 @@ import Loading from '../components/Loading';
 const PrivateRoute = () => {
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(false);
+    const [logged, setLogged] = useState(false);
 
     //Load user and settings data
-    // function loadUser() {
-    //     setLoading(true);
-    //     userStorage.getUser().then((rsp) => {
-    //         setUser(rsp);
-    //     });
-    //     setLoading(false);
-    // }
-     function loadUser() {
-        setLoading(true);
-        const temp = userStorage.getTempUser()
-        setUser(temp);
-        setLoading(false);
+    function loadUser() {
+        if(!logged){
+            setLoading(true);
+            // userStorage.getUser().then((rsp) => {
+            //     setUser(rsp);
+            // });
+            const rsp = userStorage.getUser()
+            if(rsp){
+                setUser(rsp)
+            }
+            setLoading(false);
+        }
     }
     useEffect(() => {
         loadUser();
-        if (!userStorage.isUserSet()) {
+        if (!userStorage.isUserSet() && !logged) {
             window.location.href = '/login';
         }
-        console.log(user)
     }, []);
 
     //if user is not set, return to Login page
     if (loading && !user) {
         return <Loading />;
-    } else if (user) {
+    } else if (user || logged) {
         return (
             <UserContext.Provider
                 value={{ user, setUser }}

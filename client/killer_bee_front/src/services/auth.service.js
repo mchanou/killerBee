@@ -5,7 +5,7 @@ import UserStorage from '../services/storage/user.storage'
 const login_axios = axios.create({
     baseURL: 'http://localhost:5000/',
     timeout: 10000,
-    withCredentials: true,
+    withCredentials: false,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -27,10 +27,10 @@ class AuthService {
             .then((response) => {
                 //Clean Storage
                 UserStorage.clean();
-
                 if (response.status === 200) {
                     //Load User Settings
-                    UserStorage.getUser().then();
+                    UserStorage.setUser(response.data.username)
+                    //UserStorage.getUser().then();
                    
                 } else {
                     state.error = 'Unknown error';
@@ -164,6 +164,10 @@ class AuthService {
     //         window.location.href = '/login';
     //     });
     // }
+    logout(){
+        localStorage.clear()
+        window.location.href = '/login';
+    }
 }
 
 export default new AuthService();

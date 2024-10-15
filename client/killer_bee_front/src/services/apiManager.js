@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 import userStorage from '../services/storage/user.storage'
 
 //export const BASE_URL = process.env.REACT_APP_BASE_URL;
-export const BASE_URL = 'http://localhost:5000';
+export const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const miAPI = axios.create({
     baseURL: BASE_URL,
@@ -78,7 +78,6 @@ export const apiPOST = (url, data) => {
         })
         .catch((error) => {
             state.error = 'Unknown error';
-            console.log(error.response);
             if (error.response) {
                 state.error = error.response.data.error || error.message;
                 if (

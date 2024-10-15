@@ -13,7 +13,7 @@ const PublicRoute = () => {
         } else {
             return;
         }
-    }, []);
+    }, [user]);
 
     return (
         <>

@@ -82,6 +82,7 @@ function Header() {
                                 Welcome 
                                 <span className="capitalize">
                                     {user ? user : " User"}
+                                    
                                 </span>
                             </Typography>
 

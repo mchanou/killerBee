@@ -1,6 +1,6 @@
 import { TextField, FormControl} from "@mui/material";
 import Grid from '@mui/material/Grid2';
-import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
+import { forwardRef, useState, useEffect } from "react";
 import {useSnackbar } from "notistack";
 import KbDialog from "./KbDialog";
 import { apiPOST } from "../services/apiManager";
@@ -19,13 +19,12 @@ const IngredientForm = forwardRef((props, ref) =>{
         apiPOST('/api/addIngredient', ingredient).then((rsp)=>{
             if(rsp.statusCode === 200 && rsp.statusText === "OK"){
                 enqueueSnackbar("Ingredient added !", {variant: "success"})
-                props.onClose()
+                props.onClose();
             }
             else{
                 enqueueSnackbar("Error: Ingredient not added", {variant: "error"})
             }
         })
-        //console.log(ingredient)
     }
     
    function handleChange(id, value){
