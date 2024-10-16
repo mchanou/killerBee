@@ -3,7 +3,7 @@ import api from './apiManager';
 import UserStorage from '../services/storage/user.storage'
 
 const login_axios = axios.create({
-    baseURL: 'http://localhost:5000/',
+    baseURL: process.env.REACT_APP_BASE_URL,
     timeout: 10000,
     withCredentials: false,
     headers: {

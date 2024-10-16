@@ -3,11 +3,9 @@ import AuthService from './auth.service';
 import swal from 'sweetalert';
 import userStorage from '../services/storage/user.storage'
 
-//export const BASE_URL = process.env.REACT_APP_BASE_URL;
-export const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const miAPI = axios.create({
-    baseURL: BASE_URL,
+    baseURL: process.env.REACT_APP_BASE_URL,
     timeout: 10000,
     //withCredentials: true,
     headers: {
