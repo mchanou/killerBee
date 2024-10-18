@@ -120,7 +120,7 @@ const FreezbeForm = forwardRef((props, ref) =>{
                 <TextField required multiline label= "Description" variant="outlined" placeholder="Enter a description" rows={4} fullWidth onChange={(e)=>handleFreezbe("DescriptionFreezbe", e.target.value)}/>
             </Grid>
             <Grid size={4}>
-                    <TextField required label="Price" variant="outlined" placeholder="Enter the price" fullWidth onChange={(e)=>handleFreezbe("PrixUHTFreezbe", e.target.value)}/>
+                    <TextField type="number" required label="Price" variant="outlined" placeholder="Enter the price" fullWidth onChange={(e)=>handleFreezbe("PrixUHTFreezbe", e.target.value)}/>
                 </Grid>
                 <Grid size={8}>
                     <TextField required label = "Product Line" variant="outlined" placeholder="Enter the product line" fullWidth onChange={(e)=>handleFreezbe("GammeFreezbe", e.target.value)}/>
@@ -135,7 +135,7 @@ const FreezbeForm = forwardRef((props, ref) =>{
                         }): <MenuItem value="" disabled>No ingredient found</MenuItem>}
                     </TextField>
                         </Grid>
-                <Grid size={4}><TextField label = "Grammage" variant="outlined" placeholder="Enter the grammage" name="grammage" value={grammage} onChange={handleGrammage} fullWidth></TextField></Grid>
+                <Grid size={4}><TextField type="number" label = "Grammage" variant="outlined" placeholder="Enter the grammage" name="grammage" value={grammage} onChange={handleGrammage} fullWidth></TextField></Grid>
                 <Grid size={12}><Button variant="contained" onClick={addIng}>Add ingredient to the list</Button></Grid>
                 {/* <Grid size={12}><Button variant="contained" onClick={()=>{console.log(freezbe)}}>Test Button</Button></Grid> */}
             <Grid size={12}>

@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import FreezbeForm from './FreezbeForm';
 import ProcedureForm from './ProcedureForm';
 import IngredientForm from './IngredientForm';
+import classNames from 'classnames';
 
 export default function KbPanel({type}){
 
@@ -36,7 +37,9 @@ export default function KbPanel({type}){
   }
     return(
         <>
+        <div className="flex mr-3 justify-end">
         <Button variant='contained' onClick={()=>handleOpen(type)}><AddIcon/>Add</Button>
+        </div>
         <FreezbeForm open={openFreezbe} onClose={()=>handleClose("freezbe")}/>
         <IngredientForm open={openIng} onClose={()=>handleClose("ingredient")}/>
         <ProcedureForm open={openProc} onClose={()=>handleClose("procedure")}/>

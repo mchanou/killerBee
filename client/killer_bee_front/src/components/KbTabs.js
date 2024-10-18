@@ -20,9 +20,25 @@ export default function Tabs() {
     PrixUHTFreezbe: ''
 };
 let freezbesFilterInitial = freezbesFilterEmpty;
-  const [filters, setFilters] = React.useState(freezbesFilterEmpty);
+  const [freezbeFilters, setFreezbeFilters] = React.useState(freezbesFilterInitial);
+  const [ingredientFilters, setIngredientFilters] = React.useState(freezbesFilterInitial);
+  const [procedureFilters, setProcedureFilters] = React.useState(freezbesFilterInitial);
   
-  const columns = [
+  const columnsFreezbe = [
+    {
+      field: 'IdFreezbe',
+      label: 'Freezbe ID',
+      sortable: true,
+      renderCell: (params) => {
+          return (
+              <div className="flex items-center max-h-full">
+                  <div>
+                      <p className="mb-1">{params.IdFreezbe}</p>
+                  </div>
+              </div>
+          );
+      },
+  },
     {
         field: 'NomFreezbe',
         label: 'Freezbe Name',
@@ -56,7 +72,7 @@ let freezbesFilterInitial = freezbesFilterEmpty;
         renderCell: (params) => {
             return (
                 <div className="flex items-center max-h-full">
-                    <div>{params.PrixUHTFreezbe}</div>
+                    <div>{"$"+params.PrixUHTFreezbe}</div>
                 </div>
             );
         },
@@ -94,9 +110,138 @@ let freezbesFilterInitial = freezbesFilterEmpty;
     },
 ];
 
-//Get all licenses data depending of filters
+const columnsIngredient = [
+  {
+    field: 'IdIngredient',
+    label: 'Ingredient ID',
+    sortable: true,
+    renderCell: (params) => {
+        return (
+            <div className="flex items-center max-h-full">
+                <div>
+                    <p className="mb-1">{params.IdIngredient}</p>
+                </div>
+            </div>
+        );
+    },
+},
+  {
+      field: 'NomIngredient',
+      label: 'Ingredient Name',
+      sortable: true,
+      renderCell: (params) => {
+          return (
+              <div className="flex items-center max-h-full">
+                  <div>
+                      <p className="mb-1">{params.NomIngredient}</p>
+                  </div>
+              </div>
+          );
+      },
+  },
+  {
+      field: 'DescriptionIngredient',
+      label: 'Ingredient Description',
+      sortable: false,
+      renderCell: (params) => {
+          return (
+              <div className="flex items-center max-h-full">
+                  <div>{params.DescriptionIngredient}</div>
+              </div>
+          );
+      },
+  },
+  {
+      field: 'actions',
+      label: '',
+      type: 'actions',
+      sortable: false,
+      renderCell: (params) => {
+          return (
+              <div>
+                  <div className="flex items-center">
+                    IN MAINTENANCE
+                  </div>
+              </div>
+          );
+      },
+  },
+];
+
+const columnsProcedure = [
+  {
+    field: 'IdProcedure',
+    label: 'Procedure ID',
+    sortable: true,
+    renderCell: (params) => {
+        return (
+            <div className="flex items-center max-h-full">
+                <div>
+                    <p className="mb-1">{params.IdProcede}</p>
+                </div>
+            </div>
+        );
+    },
+},
+  {
+      field: 'NomProcedure',
+      label: 'Procedure Name',
+      sortable: true,
+      renderCell: (params) => {
+          return (
+              <div className="flex items-center max-h-full">
+                  <div>
+                      <p className="mb-1">{params.NomProcede}</p>
+                  </div>
+              </div>
+          );
+      },
+  },
+  {
+      field: 'DescriptionProcedure',
+      label: 'Procedure Description',
+      sortable: false,
+      renderCell: (params) => {
+          return (
+              <div className="flex items-center max-h-full">
+                  <div>{params.DescriptionProcede}</div>
+              </div>
+          );
+      },
+  },
+  {
+      field: 'ValidationTest',
+      label: 'Validation',
+      sortable: false,
+      renderCell: (params) => {
+          return (
+              <div className="flex items-center max-h-full">
+                  <div>{params.ValidationTest === true ? "Yes" : "No"}</div>
+              </div>
+          );
+      },
+  },
+  {
+      field: 'actions',
+      label: '',
+      type: 'actions',
+      sortable: false,
+      renderCell: (params) => {
+          return (
+              <div>
+                  <div className="flex items-center">
+                    IN MAINTENANCE
+                  </div>
+              </div>
+          );
+      },
+  },
+];
+
+//Get all freezbe data depending of filters
 function searchFreezbes(filters, sortColumn, sortDirection) {
   const params = new URLSearchParams({
+      IdFreezbe: filters.IdFreezbe,  
       NomFreezbe: filters.NomFreezbe,
       GammeFreezbe: filters.GammeFreezbe,
       PrixUHTFreezbe: filters.PrixUHTFreezbe,
@@ -104,6 +249,28 @@ function searchFreezbes(filters, sortColumn, sortDirection) {
       direction: sortDirection ? sortDirection : '',
   });
   return apiGET('/api/freezbe', { params });
+}
+
+//Get all ingredient data depending of filters
+function searchIngredients(filters, sortColumn, sortDirection) {
+  const params = new URLSearchParams({
+      IdIngredient: filters.IdIngredient,
+      NomIngredient: filters.NomIngredient,
+      column: sortColumn ? sortColumn : '',
+      direction: sortDirection ? sortDirection : '',
+  });
+  return apiGET('/api/ingredient', { params });
+}
+
+//Get all procedure data depending of filters
+function searchProcedures(filters, sortColumn, sortDirection) {
+  const params = new URLSearchParams({
+      IdProcede: filters.IdProcede,
+      NomProcede: filters.NomProcede,
+      column: sortColumn ? sortColumn : '',
+      direction: sortDirection ? sortDirection : '',
+  });
+  return apiGET('/api/procede', { params });
 }
 
   const handleChange = (event, newValue) => {
@@ -127,24 +294,43 @@ function searchFreezbes(filters, sortColumn, sortDirection) {
         <TabPanel value="1">
             <KbPanel type="freezbe"/>
             <KbTable
-            filters={filters}
+            filters={freezbeFilters}
             defaultSorting={{
               column: 'IdFreezbe',
               direction: 'desc',
           }}
           fetchData={searchFreezbes}
-            columns={columns}
+            columns={columnsFreezbe}
             paginationServer={false}
             />
         </TabPanel>
         <TabPanel value="2">
           <KbPanel type="ingredient"/>
+          <KbTable
+            filters={ingredientFilters}
+            defaultSorting={{
+              column: 'IdFreezbe',
+              direction: 'desc',
+          }}
+          fetchData={searchIngredients}
+            columns={columnsIngredient}
+            paginationServer={false}
+            />
         </TabPanel>
         <TabPanel value="3">
           <KbPanel type="procedure"/>
+          <KbTable
+            filters={procedureFilters}
+            defaultSorting={{
+              column: 'IdFreezbe',
+              direction: 'desc',
+          }}
+          fetchData={searchProcedures}
+            columns={columnsProcedure}
+            paginationServer={false}
+            />
         </TabPanel>
       </TabContext>
-      <Button variant='contained' onClick={logout}>Log out</Button>
     </Box>
   );
 }

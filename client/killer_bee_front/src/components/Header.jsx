@@ -74,9 +74,10 @@ function Header() {
                                 component="div"
                                 variant="h6"
                                 sx={[
-                                    { display: { xs: 'block' } }
+                                    { display: { xs: 'block' }, marginRight: 2 }
                                     
                                 ]}
+                                className='ring'
                             >
                                 Welcome 
                                 <span className="capitalize">
@@ -84,59 +85,16 @@ function Header() {
                                 </span>
                             </Typography>
 
-                            {/* <IconButton
-                                size="small"
-                                disableFocusRipple
-                                sx={(theme) => ({
-                                    '&:hover': {
-                                        backgroundColor:
-                                            theme.palette.secondary.dark,
-                                    },
-                                })}
-                            >
-                                <Link to="/profile">
-                                    <AccountCircle
-                                        sx={[
-                                            { cursor: 'pointer' },
-                                            (theme) => ({
-                                                color: theme.palette.text
-                                                    .primary,
-                                                '&:hover': {
-                                                    color: theme.palette.primary
-                                                        .light,
-                                                },
-                                            }),
-                                        ]}
-                                    />
-                                </Link>
-                            </IconButton>
-
                             <IconButton
                                 size="small"
-                                sx={(theme) => ({
-                                    '&:hover': {
-                                        backgroundColor:
-                                            theme.palette.secondary.dark,
-                                    },
-                                })}
                                 onClick={logOut}
                             >
                                 <Link>
                                     <LoginOutlined
-                                        sx={[
-                                            { cursor: 'pointer' },
-                                            (theme) => ({
-                                                color: theme.palette.text
-                                                    .primary,
-                                                '&:hover': {
-                                                    color: theme.palette.primary
-                                                        .light,
-                                                },
-                                            }),
-                                        ]}
+                                    className='text-white hover:text-sky-900'
                                     />
                                 </Link>
-                            </IconButton> */}
+                            </IconButton>
                         </div>
                     </div>
                 </Toolbar>
