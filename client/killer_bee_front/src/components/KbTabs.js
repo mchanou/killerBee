@@ -7,22 +7,37 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import KbTable from './KbTable';
 import { Button } from '@mui/material';
-import authService from '../services/auth.service';
 import classNames from 'classnames';
 import { apiGET } from '../services/apiManager';
+import FreezbeFilter from './FreezbeFilter';
+import ProcedureFilter from './ProcedureFilter';
+import IngredientFilter from './IngredientFilter';
+import { useSnackbar } from 'notistack';
 
 
 export default function Tabs() {
-  const [value, setValue] = React.useState('1');
+    const enqueueSnackbar = useSnackbar();
+    const [value, setValue] = React.useState('1');
   const freezbesFilterEmpty = {
+    IdFreezbe: '',
     NomFreezbe: '',
-    GammeFreezbe: '',
-    PrixUHTFreezbe: ''
-};
-let freezbesFilterInitial = freezbesFilterEmpty;
-  const [freezbeFilters, setFreezbeFilters] = React.useState(freezbesFilterInitial);
-  const [ingredientFilters, setIngredientFilters] = React.useState(freezbesFilterInitial);
-  const [procedureFilters, setProcedureFilters] = React.useState(freezbesFilterInitial);
+    GammeFreezbe: ''
+    };
+    const ingredientsFilterEmpty = {
+        IdIngredient: '',
+        NomIngredient: ''
+    };
+
+    const proceduresFilterEmpty = {
+        IdProcede: '',
+        NomProcede: ''
+    };
+    let freezbesFilterInitial = freezbesFilterEmpty;
+    let ingredientsFilterInitial = ingredientsFilterEmpty;
+    let proceduresFilterInitial = proceduresFilterEmpty;
+    const [freezbeFilters, setFreezbeFilters] = React.useState(freezbesFilterInitial);
+    const [ingredientFilters, setIngredientFilters] = React.useState(ingredientsFilterInitial);
+    const [procedureFilters, setProcedureFilters] = React.useState(proceduresFilterInitial);
   
   const columnsFreezbe = [
     {
@@ -238,13 +253,77 @@ const columnsProcedure = [
   },
 ];
 
+ //Check filters fields
+ const checkFilters = (type, filters) => {
+    if (!filters || !type) return false;
+
+    if(type === "freezbe"){
+        if (filters.NomFreezbe && filters.NomFreezbe.length < 3) {
+            enqueueSnackbar(
+                'Freezbe Name is too short (Min 3 characters required)',
+                { variant: 'error' }
+            );
+            return false;
+        }
+    
+        if (filters.GammeFreezbe && filters.GammeFreezbe.length < 3) {
+            enqueueSnackbar(
+                'Serial Number is too short (Min 3 characters required)',
+                { variant: 'error' }
+            );
+            return false;
+        }
+    
+        return true;
+    }
+    else if(type === "ingredient"){
+        if (filters.NomIngredient && filters.NomIngredient.length < 3) {
+            enqueueSnackbar(
+                'Ingredient Name is too short (Min 3 characters required)',
+                { variant: 'error' }
+            );
+            return false;
+        }
+    
+        return true;
+    }
+    else if(type === "procedure"){
+        if (filters.NomProcede && filters.NomProcede.length < 3) {
+            enqueueSnackbar(
+                'Procedure Name is too short (Min 3 characters required)',
+                { variant: 'error' }
+            );
+            return false;
+        }
+        return true;
+    }
+
+};
+
+//Seach function for filters
+const searchFreezbesFilters = async (values) => {
+    if (!checkFilters(values)) return;
+    setFreezbeFilters(values);
+};
+
+//Seach function for filters
+const searchIngredientsFilters = async (values) => {
+    if (!checkFilters(values)) return;
+    setIngredientFilters(values);
+};
+
+//Seach function for filters
+const searchProceduresFilters = async (values) => {
+    if (!checkFilters(values)) return;
+    setProcedureFilters(values);
+};
+
 //Get all freezbe data depending of filters
 function searchFreezbes(filters, sortColumn, sortDirection) {
   const params = new URLSearchParams({
       IdFreezbe: filters.IdFreezbe,  
       NomFreezbe: filters.NomFreezbe,
       GammeFreezbe: filters.GammeFreezbe,
-      PrixUHTFreezbe: filters.PrixUHTFreezbe,
       column: sortColumn ? sortColumn : '',
       direction: sortDirection ? sortDirection : '',
   });
@@ -277,15 +356,12 @@ function searchProcedures(filters, sortColumn, sortDirection) {
     setValue(newValue);
   };
 
-  function logout(){
-    authService.logout();
-  }
 
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList onChange={handleChange}>
             <Tab label="Freezbe Models" value="1" />
             <Tab label="Ingredients" value="2" />
             <Tab label="Procedures" value="3" />
@@ -293,6 +369,11 @@ function searchProcedures(filters, sortColumn, sortDirection) {
         </Box>
         <TabPanel value="1">
             <KbPanel type="freezbe"/>
+            <FreezbeFilter
+            emptyValues={freezbesFilterEmpty}
+            searchFunction={searchFreezbesFilters}
+            initialValues={freezbesFilterInitial}
+            />
             <KbTable
             filters={freezbeFilters}
             defaultSorting={{
@@ -306,6 +387,11 @@ function searchProcedures(filters, sortColumn, sortDirection) {
         </TabPanel>
         <TabPanel value="2">
           <KbPanel type="ingredient"/>
+          <IngredientFilter
+            emptyValues={ingredientsFilterEmpty}
+            searchFunction={searchIngredientsFilters}
+            initialValues={ingredientsFilterInitial}
+            />
           <KbTable
             filters={ingredientFilters}
             defaultSorting={{
@@ -319,6 +405,11 @@ function searchProcedures(filters, sortColumn, sortDirection) {
         </TabPanel>
         <TabPanel value="3">
           <KbPanel type="procedure"/>
+          <ProcedureFilter
+            emptyValues={proceduresFilterEmpty}
+            searchFunction={searchProceduresFilters}
+            initialValues={proceduresFilterInitial}
+            />
           <KbTable
             filters={procedureFilters}
             defaultSorting={{

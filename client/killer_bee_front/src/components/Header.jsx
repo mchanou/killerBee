@@ -77,7 +77,6 @@ function Header() {
                                     { display: { xs: 'block' }, marginRight: 2 }
                                     
                                 ]}
-                                className='ring'
                             >
                                 Welcome 
                                 <span className="capitalize">

@@ -30,11 +30,11 @@ router.post('/', (req, res) => {
         return res.status(400).json({ message: 'Username and password are required.' });
     }
 
-    if(username === process.env.USER1 && password === sha512.sha512(process.env.PASS1)){
+    if(username === process.env.USER1 && password === process.env.PASS1){
         console.log("Authenticated successfully");
         return res.status(200).json({ message: 'Authenticated successfully', username: username });
     }
-    else if(username === process.env.USER2 && password === sha512.sha512(process.env.PASS2)){
+    else if(username === process.env.USER2 && password === process.env.PASS2){
         console.log("Authenticated successfully");
         return res.status(200).json({ message: 'Authenticated successfully', username: username });
     }

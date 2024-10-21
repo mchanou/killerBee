@@ -365,8 +365,7 @@ const KbTable = forwardRef(
                                 dir="ltr"
                             >
                                 <Button
-                                    border={false}
-                                    processing={page <= 1}
+                                    disabled={page <= 1 ? true : false}
                                     onClick={() => handlePageClick(page - 1)}
                                     size="small"
                                 >
@@ -376,12 +375,11 @@ const KbTable = forwardRef(
                                     {pageStartIndex}-
                                     {pageEndIndex > rowCount
                                         ? rowCount
-                                        : pageEndIndex}{' of'}
+                                        : pageEndIndex}{' of '}
                                      {rowCount}{' items'}
                                 </span>
                                 <Button
-                                    border={false}
-                                    processing={page >= pageCount}
+                                    disabled={page >= pageCount ? true : false}
                                     onClick={() => handlePageClick(page + 1)}
                                     size="small"
                                 >

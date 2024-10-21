@@ -26,7 +26,7 @@ router.post('/', (req, res) => {
                 console.error("Erreur lors de la récupération de l'ID : ", err);
                 return res.status(500).json({ message: 'Erreur lors de la récupération de l\'ID du Freezbe.' });
             }
-            console.log("Insert Result: " + JSON.stringify(result))
+            
             let IdProcede = null;
             if (result && result.recordset && result.recordset.length > 0) {
                 IdProcede = result.recordset[0].Id;
@@ -40,7 +40,6 @@ router.post('/', (req, res) => {
             }
             
             const query2 = `INSERT INTO dbo.Etape (DescriptionEtape, NumEtape, IdProcede) VALUES `
-            console.log(StepsList)
             const values = StepsList.map(obj => `('${obj.stepDesc}', ${obj.stepNumber}, ${IdProcede})`).join(', ');
             
             if (values.length === 0) {
@@ -48,7 +47,6 @@ router.post('/', (req, res) => {
             }
     
             const finalQuery = query2 + values
-           console.log("Final query "+finalQuery)
             sql.query(connectionString, finalQuery, (err)=>{
                 if(err){
                     console.error("Erreur lors de l'insertion des étapes : ", err);
