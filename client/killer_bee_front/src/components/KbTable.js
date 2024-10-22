@@ -274,6 +274,18 @@ const KbTable = forwardRef(
                                 No record found
                             </div>
                         )}
+                        {(!allData || allData.length <= 0) && (
+                            <div
+                                className={classNames(
+                                    'bg-black/[.05] dark:bg-white/[.03] ',
+                                    'hover:bg-[#149ad1]/[.24] hover:dark:bg-[#149ad1]/[.24]',
+                                    'rounded-lg shadow-lg mb-4 p-4',
+                                    'text-center'
+                                )}
+                            >
+                                No record found
+                            </div>
+                        )}
                         {data &&
                             data.map((row) => (
                                 <div

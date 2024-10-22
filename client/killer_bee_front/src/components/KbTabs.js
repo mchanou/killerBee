@@ -16,20 +16,17 @@ import { useSnackbar } from 'notistack';
 
 
 export default function Tabs() {
-    const enqueueSnackbar = useSnackbar();
+    const {enqueueSnackbar} = useSnackbar();
     const [value, setValue] = React.useState('1');
   const freezbesFilterEmpty = {
-    IdFreezbe: '',
     NomFreezbe: '',
     GammeFreezbe: ''
     };
     const ingredientsFilterEmpty = {
-        IdIngredient: '',
         NomIngredient: ''
     };
 
     const proceduresFilterEmpty = {
-        IdProcede: '',
         NomProcede: ''
     };
     let freezbesFilterInitial = freezbesFilterEmpty;
@@ -302,26 +299,25 @@ const columnsProcedure = [
 
 //Seach function for filters
 const searchFreezbesFilters = async (values) => {
-    if (!checkFilters(values)) return;
+    if (!checkFilters("freezbe", values)) return;
     setFreezbeFilters(values);
 };
 
 //Seach function for filters
 const searchIngredientsFilters = async (values) => {
-    if (!checkFilters(values)) return;
+    if (!checkFilters("ingredient", values)) return;
     setIngredientFilters(values);
 };
 
 //Seach function for filters
 const searchProceduresFilters = async (values) => {
-    if (!checkFilters(values)) return;
+    if (!checkFilters("procedure", values)) return;
     setProcedureFilters(values);
 };
 
 //Get all freezbe data depending of filters
 function searchFreezbes(filters, sortColumn, sortDirection) {
-  const params = new URLSearchParams({
-      IdFreezbe: filters.IdFreezbe,  
+  const params = new URLSearchParams({  
       NomFreezbe: filters.NomFreezbe,
       GammeFreezbe: filters.GammeFreezbe,
       column: sortColumn ? sortColumn : '',
@@ -333,7 +329,6 @@ function searchFreezbes(filters, sortColumn, sortDirection) {
 //Get all ingredient data depending of filters
 function searchIngredients(filters, sortColumn, sortDirection) {
   const params = new URLSearchParams({
-      IdIngredient: filters.IdIngredient,
       NomIngredient: filters.NomIngredient,
       column: sortColumn ? sortColumn : '',
       direction: sortDirection ? sortDirection : '',
@@ -344,7 +339,6 @@ function searchIngredients(filters, sortColumn, sortDirection) {
 //Get all procedure data depending of filters
 function searchProcedures(filters, sortColumn, sortDirection) {
   const params = new URLSearchParams({
-      IdProcede: filters.IdProcede,
       NomProcede: filters.NomProcede,
       column: sortColumn ? sortColumn : '',
       direction: sortDirection ? sortDirection : '',
@@ -377,7 +371,7 @@ function searchProcedures(filters, sortColumn, sortDirection) {
             <KbTable
             filters={freezbeFilters}
             defaultSorting={{
-              column: 'IdFreezbe',
+              column: 'NomFreezbe',
               direction: 'desc',
           }}
           fetchData={searchFreezbes}
@@ -395,7 +389,7 @@ function searchProcedures(filters, sortColumn, sortDirection) {
           <KbTable
             filters={ingredientFilters}
             defaultSorting={{
-              column: 'IdFreezbe',
+              column: 'NomIngredient',
               direction: 'desc',
           }}
           fetchData={searchIngredients}
@@ -413,7 +407,7 @@ function searchProcedures(filters, sortColumn, sortDirection) {
           <KbTable
             filters={procedureFilters}
             defaultSorting={{
-              column: 'IdFreezbe',
+              column: 'NomProcede',
               direction: 'desc',
           }}
           fetchData={searchProcedures}

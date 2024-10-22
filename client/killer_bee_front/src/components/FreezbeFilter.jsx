@@ -7,7 +7,7 @@ export default function FreezbeFilter(props) {
     const [values, setValues] = useState(props.initialValues);
 
     useEffect(() => {
-        props.searchFunction("freezbe", values);
+        props.searchFunction(values);
     }, []); 
 
     /** RESET BUTTON */
@@ -27,7 +27,7 @@ export default function FreezbeFilter(props) {
     //Search for data depending on filters settings
     const handleClickQuery = (event) => {
         event.preventDefault();
-        const filter = { ...values, timestamp: now().valueOf() };
+        const filter = { ...values};
         setValues(filter);
         props.searchFunction(filter);
     };
@@ -38,20 +38,6 @@ export default function FreezbeFilter(props) {
                 <div className="p-2 mt-2 rounded-md bg-panel shadow">
                     <div className="relative">
                         <div className="grid grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-2 items-end justify-center">
-                            <div className="col-span-1">
-                                <TextField
-                                    id="IdFreezbe"
-                                    label="Freezbe ID"
-                                    value={values['IdFreezbe'] || ''}
-                                    onChange={(e) =>
-                                        handleSearch(
-                                            'IdFreezbe',
-                                            e.target.value
-                                        )
-                                    }
-                                    fullWidth
-                                />
-                            </div>
                             <div className="col-span-1">
                                 <TextField
                                     id="NomFreezbe"

@@ -7,7 +7,7 @@ export default function ProcedureFilter(props) {
     const [values, setValues] = useState(props.initialValues);
 
     useEffect(() => {
-        props.searchFunction("procedure", values);
+        props.searchFunction(values);
     }, []); 
 
     /** RESET BUTTON */
@@ -38,20 +38,6 @@ export default function ProcedureFilter(props) {
                 <div className="p-2 mt-2 rounded-md bg-panel shadow">
                     <div className="relative">
                         <div className="grid grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-2 items-end justify-center">
-                            <div className="col-span-1">
-                                <TextField
-                                    id="IdProcede"
-                                    label="Procedure ID"
-                                    value={values['IdProcede'] || ''}
-                                    onChange={(e) =>
-                                        handleSearch(
-                                            'IdProcede',
-                                            e.target.value
-                                        )
-                                    }
-                                    fullWidth
-                                />
-                            </div>
                             <div className="col-span-1">
                                 <TextField
                                     id="NomProcede"
