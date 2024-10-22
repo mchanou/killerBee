@@ -1,6 +1,14 @@
  
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
+
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, 
+    max: 100, 
+    message: 'Trop de requêtes provenant de cette IP, veuillez réessayer plus tard.',
+});
 
 // Userd
 const userRoutes = require('../models/Users/users');
@@ -52,6 +60,8 @@ const removeFreezbeIngredient = require('../models/Freezbe_ingredient/remove_fre
 // const findFreezbeIngredient = require('../models/Procede_etape/find_procede_etape');
 
 const authRoutes = require('../middlewares/auth');
+
+router.use(limiter); // allows to limit the number of atempts 
 
 router.use('/users', userRoutes);
 router.use('/addUsers', addUser);
